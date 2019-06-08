@@ -291,13 +291,12 @@ class BrowserWorker {
 		if ("serviceWorker" in navigator) {
 			navigator.serviceWorker
 				.register(BrowserWorker._serviceWorkerPath)
-				.then(serviceWorker => {
-					// registration worked
-					console.log("Registration succeeded. Scope is " + serviceWorker.scope);
+				.then(registration => {
+					BrowserWorker._displayInfo(`service worker registered (scope: ${registration.scope}).`);
 				})
 				.catch(function(error) {
-					// registration failed
-					console.log("Registration failed with " + error);
+					BrowserWorker._displayError("an error occured while registering your service worker.");
+					BrowserWorker._displayError(error);
 				});
 		}
 	}
@@ -332,6 +331,12 @@ class BrowserWorker {
 		self.addEventListener("activate", event => {
 			if (this._controlAllTabs) {
 				clients.claim();
+
+				BrowserWorker._displayInfo("controlling all tabs.");
+			} else {
+				BrowserWorker._displayError(
+					"controlling only this tab (if you want to controll all tabs, use BrowserWorker.enableControlOverAllTabs())"
+				);
 			}
 
 			// Cleans old caches
@@ -340,7 +345,8 @@ class BrowserWorker {
 					return Promise.all(
 						cacheNames
 							.filter(cacheName => !BrowserWorker._activeCachesName.includes(cacheName))
-							.map(cacheName => caches.delete(cacheName))
+							.map(cacheName => caches.delete(cacheName)),
+						BrowserWorker._displayInfo("cleaned old caches.")
 					);
 				})
 			);
@@ -349,6 +355,12 @@ class BrowserWorker {
 		self.addEventListener("install", () => {
 			if (!this._waitOtherInstances) {
 				self.skipWaiting();
+
+				BrowserWorker._displayInfo("skipped waiting for other instances to finish.");
+			} else {
+				BrowserWorker._displayInfo(
+					"waiting for others instances before installing (if you want to skip waiting, use BrowserWorker.disableWaitingOtherInstances())"
+				);
 			}
 		});
 
@@ -365,17 +377,33 @@ class BrowserWorker {
 										.open(BrowserWorker._getCurrentRouteCacheName())
 										.then(cache => cache.put(event.request, response.clone()));
 
+									BrowserWorker._displayInfo(
+										`[NetworkFirst] fetched ${event.request.url} from the network (and put it in the cache)`
+									);
+
 									return response.clone();
 								} else {
+									BrowserWorker._displayInfo(
+										`[NetworkFirst] fetched ${event.request.url} from the cache because it seems the network is down`
+									);
+
 									return caches.match(event.request);
 								}
 							})
-							.catch(() => caches.match(event.request))
+							.catch(() => {
+								BrowserWorker._displayInfo(
+									`[NetworkFirst] fetched ${event.request.url} from the cache because it seems the network is down`
+								);
+
+								return caches.match(event.request);
+							})
 					);
 				} else if (BrowserWorker._currentRouteStrategyIs(CacheStrategy.CACHE_FIRST)) {
 					event.respondWith(
 						caches.match(event.request).then(function(response) {
 							if (response) {
+								BrowserWorker._displayInfo(`[CacheFirst] fetched ${event.request.url} from the cache`);
+
 								return response;
 							}
 
@@ -390,11 +418,23 @@ class BrowserWorker {
 									cache.put(event.request, responseToCache);
 								});
 
+								BrowserWorker._displayInfo(
+									`[CacheFirst] No cache found for ${
+										event.request.url
+									}, so the resource have been fetched from the network and stored in cache`
+								);
+
 								return response;
 							});
 						})
 					);
+				} else {
+					BrowserWorker._displayWarning(`unsupported strategy ${BrowserWorker._currentRoute.strategy}`);
 				}
+			} else {
+				BrowserWorker._displayInfo(
+					`resource ${event.request.url} do not match any strategy, leaving the browser to handle it`
+				);
 			}
 		});
 	}
@@ -507,12 +547,37 @@ class BrowserWorker {
 	}
 
 	/**
+	 *
+	 * @param {String} message
+	 * @return {String}
+	 */
+	static _getDisplayMessage(message) {
+		const date = new Date();
+		const hours = date
+			.getHours()
+			.toString()
+			.padStart(2, "0");
+		const minutes = date
+			.getMinutes()
+			.toString()
+			.padStart(2, "0");
+		const seconds = date
+			.getSeconds()
+			.toString()
+			.padStart(2, "0");
+		const milliseconds = date.getMilliseconds();
+		const timestamp = `${hours}:${minutes}:${seconds}.${milliseconds}`;
+
+		return `[BrowserWorker][${timestamp}] ${message}`;
+	}
+
+	/**
 	 * @param {String} message
 	 * @return {Void}
 	 */
 	static _displayInfo(message) {
 		if (BrowserWorker.debugEnabled()) {
-			console.info(message);
+			console.info(BrowserWorker._getDisplayMessage(message));
 		}
 	}
 
@@ -522,7 +587,18 @@ class BrowserWorker {
 	 */
 	static _displayError(message) {
 		if (BrowserWorker.debugEnabled()) {
-			console.error(message);
+			console.error(BrowserWorker._getDisplayMessage(message));
+		}
+	}
+
+	/**
+	 *
+	 * @param {String} message
+	 * @return {Void}
+	 */
+	static _displayWarning(message) {
+		if (BrowserWorker.debugEnabled()) {
+			console.warn(BrowserWorker._getDisplayMessage(message));
 		}
 	}
 }
