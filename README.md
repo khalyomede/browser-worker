@@ -115,6 +115,7 @@ BrowserWorker.setServiceWorkerPath("/service-worker.js").registerServiceWorker()
 ```
 
 ```javascript
+// myapp/service-worker.js
 import { BrowserWorker, CacheStrategy, Route } from "@khalyomede/browser-worker";
 
 BrowserWorker.enableDebug();
