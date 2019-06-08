@@ -2,6 +2,8 @@
 
 Simplify scaffolding a service worker.
 
+![npm](https://img.shields.io/npm/v/@khalyomede/browser-worker.svg) ![NPM](https://img.shields.io/npm/l/@khalyomede/browser-worker.svg) ![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@khalyomede/browser-worker.svg)
+
 ## Summary
 
 - [About](#about)
