@@ -14,6 +14,7 @@
   - [BrowserWorker.getCacheStrategy()](#BrowserWorker.getCacheStrategy)
   - [BrowserWorker.getRoutes()](#BrowserWorker.getRoutes)
   - [BrowserWorker.hasRoute()](#BrowserWorker.hasRoute)
+  - [BrowserWorker.registerServiceWorker()](#BrowserWorker.registerServiceWorker)
   - [BrowserWorker.setCacheStrategy()](#BrowserWorker.setCacheStrategy)
   - [BrowserWorker.setServiceWorkerPath()](#BrowserWorker.setServiceWorkerPath)
 
@@ -169,6 +170,20 @@ Returns true if at least one route matches the route or the regexp, else returns
 
 ```javascript
 import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST);BrowserWorker.addRoute("/");if (BrowserWorker.hasRoute("/")) { console.log("has route /");} else { console.log("has not route /");}
+```
+
+### BrowserWorker.registerServiceWorker()
+
+Registers the service worker. Should be used in your main javascript file (and not in the service worker file itself).
+
+**since**: v0.1.0
+
+**returns** Void
+
+**examples**
+
+```javascript
+import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.setServiceWorkerPath("/service-worker.js").registerServiceWorker();
 ```
 
 ### BrowserWorker.setCacheStrategy()

@@ -287,6 +287,16 @@ class BrowserWorker {
 		return this;
 	}
 
+	/**
+	 * Registers the service worker. Should be used in your main javascript file (and not in the service worker file itself).
+	 *
+	 * @return {Void}
+	 * @since 0.1.0
+	 * @example
+	 * import { BrowserWorker } from "@khalyomede/browser-worker";
+	 *
+	 * BrowserWorker.setServiceWorkerPath("/service-worker.js").registerServiceWorker();
+	 */
 	static registerServiceWorker() {
 		if ("serviceWorker" in navigator) {
 			navigator.serviceWorker
