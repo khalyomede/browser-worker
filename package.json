@@ -32,6 +32,7 @@
 		"gulp-rename": "1.*",
 		"gulp-sha": "0.*",
 		"gulp-typescript": "5.*",
+		"jsdoc-api": "5.*",
 		"tinyify": "2.*",
 		"tsify": "3.*",
 		"typescript": "3.*"
@@ -39,7 +40,8 @@
 	"scripts": {
 		"start": "gulp start",
 		"build": "gulp build",
-		"gulp": "gulp"
+		"gulp": "gulp",
+		"documentation": "node script/documentation.js"
 	},
 	"files": [
 		"lib/BrowserWorker.js",
