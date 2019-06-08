@@ -1,0 +1,54 @@
+{
+	"name": "@khalyomede/browser-worker",
+	"version": "0.1.0",
+	"description": "Simplify scaffolding a service worker.",
+	"main": "lib/main.js",
+	"repository": "https://github.com/khalyomede/browser-worker",
+	"author": "Khalyomede <khalyomede@gmail.com>",
+	"license": "MIT",
+	"keywords": [
+		"service worker",
+		"browser",
+		"node.js",
+		"javascript",
+		"cache first",
+		"network first",
+		"progressive web app"
+	],
+	"private": false,
+	"devDependencies": {
+		"@babel/plugin-proposal-class-properties": "7.*",
+		"@babel/plugin-transform-runtime": "7.*",
+		"@babel/preset-env": "7.*",
+		"@babel/register": "7.*",
+		"@types/node": "12.*",
+		"babelify": "10.*",
+		"gulp": "4.*",
+		"gulp-babel": "8.*",
+		"gulp-bro": "1.*",
+		"gulp-clean": "0.*",
+		"gulp-if-env": "0.*",
+		"gulp-plumber": "1.*",
+		"gulp-rename": "1.*",
+		"gulp-sha": "0.*",
+		"gulp-typescript": "5.*",
+		"tinyify": "2.*",
+		"tsify": "3.*",
+		"typescript": "3.*"
+	},
+	"scripts": {
+		"start": "gulp start",
+		"build": "gulp build",
+		"gulp": "gulp"
+	},
+	"files": [
+		"lib/BrowserWorker.js",
+		"lib/CacheStrategy.js",
+		"lib/main.js",
+		"lib/Route.js"
+	],
+	"dependencies": {
+		"@babel/core": "7.*",
+		"@babel/runtime": "7.*"
+	}
+}
