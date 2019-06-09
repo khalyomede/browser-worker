@@ -15,7 +15,6 @@ class CacheStrategy {
 	 * BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST);
 	 */
 	static NETWORK_FIRST = "network-first";
-	static NETWORK_ONLY = "network-only";
 
 	/**
 	 * Instruct the service worker to fetch the requests from the cache in priority. If the request is not cached yet, the service worker will fetch it from the network and cache it once. Suitable for resources that are not business critical, do not change a lot over time, and take a long time to download, like descriptives images, cover images, ...
@@ -28,7 +27,6 @@ class CacheStrategy {
 	 * BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST);
 	 */
 	static CACHE_FIRST = "cache-first";
-	static CACHE_ONLY = "cache-only";
 
 	/**
 	 * Returns an array of string of the supported caches strategies by BrowserWorker.
@@ -41,12 +39,7 @@ class CacheStrategy {
 	 * const supported = CacheStrategy.getSupportedStrategies();
 	 */
 	static getSupportedStrategies() {
-		return [
-			CacheStrategy.NETWORK_FIRST,
-			CacheStrategy.NETWORK_ONLY,
-			CacheStrategy.CACHE_FIRST,
-			CacheStrategy.CACHE_ONLY
-		];
+		return [CacheStrategy.NETWORK_FIRST, CacheStrategy.CACHE_FIRST];
 	}
 }
 
