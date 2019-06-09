@@ -480,6 +480,23 @@ class BrowserWorker {
 	}
 
 	/**
+	 * Reset the cache strategy by setting its default value to empty.
+	 *
+	 * @return {BrowserWorker}
+	 * @since 0.2.0
+	 * @example
+	 * import { BrowserWorker, CacheStrategy } from "browser-worker";
+	 *
+	 * BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST);
+	 * BrowserWorker.resetCacheStrategy();
+	 *
+	 * console.log(BrowserWorker.getCacheStrategy()); // ""
+	 */
+	static resetCacheStrategy() {
+		BrowserWorker._cacheStrategy = "";
+	}
+
+	/**
 	 * @return {Boolean}
 	 */
 	static _cacheStrategyValid() {
