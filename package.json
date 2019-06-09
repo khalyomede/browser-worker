@@ -35,6 +35,7 @@
 		"gulp-typescript": "5.*",
 		"jsdoc-api": "5.*",
 		"mocha": "6.*",
+		"nyc": "14.*",
 		"sort-by": "1.*",
 		"tinyify": "2.*",
 		"tsify": "3.*",
@@ -44,7 +45,8 @@
 		"start": "gulp start",
 		"build": "gulp build",
 		"gulp": "gulp",
-		"documentation": "node script/documentation.js"
+		"documentation": "node script/documentation.js",
+		"test": "mocha --require @babel/register test"
 	},
 	"files": [
 		"lib/BrowserWorker.js",
