@@ -25,7 +25,7 @@ class BrowserWorker {
 	static enableControlOverAllTabs() {
 		this._controlAllTabs = true;
 
-		return new this();
+		return this;
 	}
 
 	/**
@@ -41,7 +41,7 @@ class BrowserWorker {
 	static disableWaitingOtherInstances() {
 		this._waitOtherInstances = false;
 
-		return new this();
+		return this;
 	}
 
 	/**
@@ -74,7 +74,7 @@ class BrowserWorker {
 
 		BrowserWorker._cacheStrategy = strategy;
 
-		return new this();
+		return this;
 	}
 
 	/**
@@ -155,7 +155,7 @@ class BrowserWorker {
 			BrowserWorker.addRoute(route);
 		}
 
-		return new this();
+		return this;
 	}
 
 	/**
@@ -209,7 +209,7 @@ class BrowserWorker {
 	 * BrowserWorker.deleteRoute("/");
 	 */
 	static deleteRoute() {
-		return new this();
+		return this;
 	}
 
 	/**
@@ -226,7 +226,7 @@ class BrowserWorker {
 	 * BrowserWorker.deleteRoutes();
 	 */
 	static deleteRoutes() {
-		return new this();
+		return this;
 	}
 
 	/**
