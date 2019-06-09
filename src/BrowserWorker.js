@@ -461,6 +461,8 @@ class BrowserWorker {
 	 */
 	static enableDebug() {
 		BrowserWorker._debug = true;
+
+		return this;
 	}
 
 	/**
