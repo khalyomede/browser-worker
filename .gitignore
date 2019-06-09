@@ -1,3 +1,4 @@
 node_modules
 example
 yarn-error.log
+.nyc_output
