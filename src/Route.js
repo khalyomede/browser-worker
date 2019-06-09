@@ -14,7 +14,7 @@ class Route {
 	 *
 	 * BrowserWorker.addRoute(Route.IMAGES);
 	 */
-	static IMAGES = /\.(png|jpg|jpeg|gif|svg|webp)$/i;
+	static IMAGES = /\.(png|jpg|jpeg|gif|svg|webp)(\?.*)*$/i;
 
 	/**
 	 * Captures videos resources, including webm.
@@ -26,7 +26,7 @@ class Route {
 	 *
 	 * BrowserWorker.addRoute(Route.VIDEOS);
 	 */
-	static VIDEOS = /\.(mp4|ogv|ogg|webm|flv|3gp|mkv)$/i;
+	static VIDEOS = /\.(mp4|ogv|ogg|webm|flv|3gp|mkv)(\?.*)*$/i;
 
 	/**
 	 * Captures audios resources.
@@ -38,7 +38,7 @@ class Route {
 	 *
 	 * BrowserWorker.addRoute(Route.AUDIOS);
 	 */
-	static AUDIOS = /\.(wav|mp3|ogg)$/i;
+	static AUDIOS = /\.(wav|mp3|ogg)(\?.*)*$/i;
 
 	/**
 	 * Captures assets, which means Javascript, CSS and HTML files.
@@ -50,11 +50,19 @@ class Route {
 	 *
 	 * BrowserWorker.addRoute(Route.ASSETS);
 	 */
-	static ASSETS = /\.(js|css|html|htm)$/i;
+	static ASSETS = /\.(js|css|html|htm)(\?.*)*$/i;
 
 	/**
-	 * @todo add fonts regular expression
+	 * Captures fonts resources.
+	 *
+	 * @type {RegExp}
+	 * @since 0.2.0
+	 * @example
+	 * import { BrowserWorker, Route } from "@khalyomede/browser-worker";
+	 *
+	 * BrowserWorker.addRoute(Route.FONTS);
 	 */
+	static FONTS = /\.(woff|woff2|ttf|eot)(\?.*)*$/i;
 }
 
 export default Route;
