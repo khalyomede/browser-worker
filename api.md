@@ -23,6 +23,7 @@
   - [CacheStrategy.NETWORK_FIRST](#CacheStrategy.NETWORK_FIRST)
   - [Route.ASSETS](#Route.ASSETS)
   - [Route.AUDIOS](#Route.AUDIOS)
+  - [Route.FONTS](#Route.FONTS)
   - [Route.IMAGES](#Route.IMAGES)
   - [Route.VIDEOS](#Route.VIDEOS)
 
@@ -241,7 +242,7 @@ import { CacheStrategy } from "browser-worker";const supported = CacheStrategy
 
 ### CacheStrategy.CACHE_FIRST
 
-Instruct the service worker to treat the requests from the cache in priority. If the request is not cached yet, the service worker will fetch it from the network and cache it once. Suitable for resources that are not business critical, do not change a lot over time, and take a long time to download, like descriptives images, cover images, ...
+Instruct the service worker to fetch the requests from the cache in priority. If the request is not cached yet, the service worker will fetch it from the network and cache it once. Suitable for resources that are not business critical, do not change a lot over time, and take a long time to download, like descriptives images, cover images, ...
 
 **since**: v0.1.0
 
@@ -255,7 +256,7 @@ import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";Brow
 
 ### CacheStrategy.NETWORK_FIRST
 
-Instruct the service worker to treat the requests from the network first, then cache them (in case the network is down). Suitable for resources that need to be the most up to date, like assets, business critical resource like product images, ...
+Instruct the service worker to fetch the requests from the network first, then cache them (in case the network is down). Suitable for resources that need to be the most up to date, like assets, business critical resource like product images, ...
 
 **since**: v0.1.0
 
@@ -293,6 +294,20 @@ Captures audios resources.
 
 ```javascript
 import { BrowserWorker, Route } from "@khalyomede/browser-worker";BrowserWorker.addRoute(Route.AUDIOS);
+```
+
+### Route.FONTS
+
+Captures fonts resources.
+
+**since**: v0.2.0
+
+**type** RegExp
+
+**examples**
+
+```javascript
+import { BrowserWorker, Route } from "@khalyomede/browser-worker";BrowserWorker.addRoute(Route.FONTS);
 ```
 
 ### Route.IMAGES
