@@ -50,7 +50,7 @@ class Route {
 	 *
 	 * BrowserWorker.addRoute(Route.ASSETS);
 	 */
-	static ASSETS = /\.(js|css|html)/;
+	static ASSETS = /\.(js|css|html)$/;
 }
 
 export default Route;
