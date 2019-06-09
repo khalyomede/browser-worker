@@ -23,6 +23,7 @@
 		"@babel/register": "7.*",
 		"@types/node": "12.*",
 		"babelify": "10.*",
+		"chai": "4.*",
 		"gulp": "4.*",
 		"gulp-babel": "8.*",
 		"gulp-bro": "1.*",
@@ -33,6 +34,8 @@
 		"gulp-sha": "0.*",
 		"gulp-typescript": "5.*",
 		"jsdoc-api": "5.*",
+		"mocha": "6.*",
+		"sort-by": "1.*",
 		"tinyify": "2.*",
 		"tsify": "3.*",
 		"typescript": "3.*"
