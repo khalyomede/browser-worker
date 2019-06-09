@@ -46,7 +46,7 @@
 		"build": "gulp build",
 		"gulp": "gulp",
 		"documentation": "node script/documentation.js",
-		"test": "mocha --require @babel/register test"
+		"test": "nyc mocha --require @babel/register test"
 	},
 	"files": [
 		"lib/BrowserWorker.js",
