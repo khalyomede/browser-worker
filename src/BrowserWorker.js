@@ -485,7 +485,7 @@ class BrowserWorker {
 	 * @return {BrowserWorker}
 	 * @since 0.2.0
 	 * @example
-	 * import { BrowserWorker, CacheStrategy } from "browser-worker";
+	 * import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";
 	 *
 	 * BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST);
 	 * BrowserWorker.resetCacheStrategy();
@@ -494,6 +494,29 @@ class BrowserWorker {
 	 */
 	static resetCacheStrategy() {
 		BrowserWorker._cacheStrategy = "";
+
+		return this;
+	}
+
+	/**
+	 * Reset the routes by settings the default value to an empty array.
+	 *
+	 * @return {BrowserWorker}
+	 * @since 0.2.0
+	 * @example
+	 * import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";
+	 *
+	 * BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+	 * 	.addRoute("/");
+	 *
+	 * BrowserWorker.resetRoutes();
+	 *
+	 * console.log(BrowserWorker.getRoutes()); // []
+	 */
+	static resetRoutes() {
+		BrowserWorker._routes = [];
+
+		return this;
 	}
 
 	/**
