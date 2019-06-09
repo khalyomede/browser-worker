@@ -24,6 +24,7 @@
 		"@types/node": "12.*",
 		"babelify": "10.*",
 		"chai": "4.*",
+		"codecov": "3.*",
 		"gulp": "4.*",
 		"gulp-babel": "8.*",
 		"gulp-bro": "1.*",
@@ -46,7 +47,8 @@
 		"build": "gulp build",
 		"gulp": "gulp",
 		"documentation": "node script/documentation.js",
-		"test": "nyc mocha --require @babel/register test"
+		"test": "nyc --reporter=lcov mocha --require @babel/register test",
+		"coverage": "codecov -t f8d82346-cd82-4982-905e-d957027807bd"
 	},
 	"files": [
 		"lib/BrowserWorker.js",
