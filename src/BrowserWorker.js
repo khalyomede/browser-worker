@@ -1,5 +1,4 @@
 import CacheStrategy from "./CacheStrategy";
-import { throws } from "assert";
 
 class BrowserWorker {
 	static _cacheStrategy = "";
