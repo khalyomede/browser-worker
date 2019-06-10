@@ -27,15 +27,19 @@ const methods = explainations.filter(explaination => explaination.kind === "func
 const constants = explainations.filter(explaination => explaination.kind === "member").sort(sortBy("memberof", "name"));
 
 for (const method of methods) {
-	markdown += `  - [${method.longname}()](#${method.longname})\n`;
+	const name = method.longname;
+	const link = name.replace(/(\.|\(|\))/, "").toLowerCase();
+
+	markdown += `  - [${name}()](#${link})\n`;
 }
 
 markdown += "- Constants\n";
 
 for (const constant of constants) {
 	const name = constant.longname.replace("#", ".");
+	const link = name.replace(/(\.|\(|\))/, "").toLowerCase();
 
-	markdown += `  - [${name}](#${name})\n`;
+	markdown += `  - [${name}](#${link})\n`;
 }
 
 markdown += "\n\n";
