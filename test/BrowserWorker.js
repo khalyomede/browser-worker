@@ -10,6 +10,31 @@ describe("BrowserWorker", () => {
 	describe("addRoute", () => {
 		it("should return a BrowserWorker object", () =>
 			expect(BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoute("/")).to.be.equal(BrowserWorker));
+
+		it("should store the route on the property", () =>
+			expect(BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoute("/")._routes).to.be.deep.equal([
+				{ cacheName: "", route: "/", strategy: "network-first" }
+			]));
+
+		it("should throw a TypeError if the route is not a String nor a RegExp", () =>
+			expect(function() {
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoute(42);
+			}).to.throw(TypeError));
+
+		it("should throw a TypeError message if the route is not a String nor a RegExp", () =>
+			expect(function() {
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoute(42);
+			}).to.throw("expected route to be either string or regexp (number given)"));
+
+		it("should throw an Error if the route is an empty String", () =>
+			expect(function() {
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoute("");
+			}).to.throw(Error));
+
+		it("should throw an Error message if the route is an empty string", () =>
+			expect(function() {
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoute("");
+			}).to.throw("expected route string not to be empty"));
 	});
 
 	describe("addRoutes", () => {
