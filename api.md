@@ -3,29 +3,31 @@
 ## Summary
 
 - Methods
-  - [BrowserWorker.addRoute()](#BrowserWorker.addRoute)
-  - [BrowserWorker.addRoutes()](#BrowserWorker.addRoutes)
-  - [BrowserWorker.debugEnabled()](#BrowserWorker.debugEnabled)
-  - [BrowserWorker.deleteRoute()](#BrowserWorker.deleteRoute)
-  - [BrowserWorker.deleteRoutes()](#BrowserWorker.deleteRoutes)
-  - [BrowserWorker.disableWaitingOtherInstances()](#BrowserWorker.disableWaitingOtherInstances)
-  - [BrowserWorker.enableControlOverAllTabs()](#BrowserWorker.enableControlOverAllTabs)
-  - [BrowserWorker.enableDebug()](#BrowserWorker.enableDebug)
-  - [BrowserWorker.getCacheStrategy()](#BrowserWorker.getCacheStrategy)
-  - [BrowserWorker.getRoutes()](#BrowserWorker.getRoutes)
-  - [BrowserWorker.hasRoute()](#BrowserWorker.hasRoute)
-  - [BrowserWorker.registerServiceWorker()](#BrowserWorker.registerServiceWorker)
-  - [BrowserWorker.setCacheStrategy()](#BrowserWorker.setCacheStrategy)
-  - [BrowserWorker.setServiceWorkerPath()](#BrowserWorker.setServiceWorkerPath)
-  - [CacheStrategy.getSupportedStrategies()](#CacheStrategy.getSupportedStrategies)
+  - [BrowserWorker.addRoute()](#browserworkeraddroute)
+  - [BrowserWorker.addRoutes()](#browserworkeraddroutes)
+  - [BrowserWorker.debugEnabled()](#browserworkerdebugenabled)
+  - [BrowserWorker.deleteRoute()](#browserworkerdeleteroute)
+  - [BrowserWorker.deleteRoutes()](#browserworkerdeleteroutes)
+  - [BrowserWorker.disableWaitingOtherInstances()](#browserworkerdisablewaitingotherinstances)
+  - [BrowserWorker.enableControlOverAllTabs()](#browserworkerenablecontroloveralltabs)
+  - [BrowserWorker.enableDebug()](#browserworkerenabledebug)
+  - [BrowserWorker.getCacheStrategy()](#browserworkergetcachestrategy)
+  - [BrowserWorker.getRoutes()](#browserworkergetroutes)
+  - [BrowserWorker.hasRoute()](#browserworkerhasroute)
+  - [BrowserWorker.registerServiceWorker()](#browserworkerregisterserviceworker)
+  - [BrowserWorker.resetCacheStrategy()](#browserworkerresetcachestrategy)
+  - [BrowserWorker.resetRoutes()](#browserworkerresetroutes)
+  - [BrowserWorker.setCacheStrategy()](#browserworkersetcachestrategy)
+  - [BrowserWorker.setServiceWorkerPath()](#browserworkersetserviceworkerpath)
+  - [CacheStrategy.getSupportedStrategies()](#cachestrategygetsupportedstrategies)
 - Constants
-  - [CacheStrategy.CACHE_FIRST](#CacheStrategy.CACHE_FIRST)
-  - [CacheStrategy.NETWORK_FIRST](#CacheStrategy.NETWORK_FIRST)
-  - [Route.ASSETS](#Route.ASSETS)
-  - [Route.AUDIOS](#Route.AUDIOS)
-  - [Route.FONTS](#Route.FONTS)
-  - [Route.IMAGES](#Route.IMAGES)
-  - [Route.VIDEOS](#Route.VIDEOS)
+  - [CacheStrategy.CACHE_FIRST](#cachestrategycache_first)
+  - [CacheStrategy.NETWORK_FIRST](#cachestrategynetwork_first)
+  - [Route.ASSETS](#routeassets)
+  - [Route.AUDIOS](#routeaudios)
+  - [Route.FONTS](#routefonts)
+  - [Route.IMAGES](#routeimages)
+  - [Route.VIDEOS](#routevideos)
 
 
 ### BrowserWorker.addRoute()
@@ -194,6 +196,34 @@ Registers the service worker. Should be used in your main javascript file (and n
 
 ```javascript
 import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.setServiceWorkerPath("/service-worker.js").registerServiceWorker();
+```
+
+### BrowserWorker.resetCacheStrategy()
+
+Reset the cache strategy by setting its default value to empty.
+
+**since**: v0.2.0
+
+**returns** BrowserWorker
+
+**examples**
+
+```javascript
+import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST);BrowserWorker.resetCacheStrategy();console.log(BrowserWorker.getCacheStrategy()); // ""
+```
+
+### BrowserWorker.resetRoutes()
+
+Reset the routes by settings the default value to an empty array.
+
+**since**: v0.2.0
+
+**returns** BrowserWorker
+
+**examples**
+
+```javascript
+import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)	.addRoute("/");BrowserWorker.resetRoutes();console.log(BrowserWorker.getRoutes()); // []
 ```
 
 ### BrowserWorker.setCacheStrategy()
