@@ -1,3 +1,4 @@
 exclude_patterns:
   - "lib/"
   - "test/"
+  - "gulpfile.babel.js"
