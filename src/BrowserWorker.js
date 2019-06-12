@@ -428,11 +428,7 @@ class BrowserWorker {
 
 									return response.clone();
 								} else {
-									BrowserWorker._displayInfo(
-										`[NetworkFirst] fetched ${event.request.url} from the cache because it seems the network is down`
-									);
-
-									return caches.match(event.request);
+									throw new Error();
 								}
 							})
 							.catch(() => {
