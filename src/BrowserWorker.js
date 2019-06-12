@@ -121,7 +121,7 @@ class BrowserWorker {
 	 * BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoute("/");
 	 */
 	static addRoute(route) {
-		if (route === null || route === undefined || (route.constructor !== String && route.constructor !== RegExp)) {
+		if (!BrowserWorker._isRouteValid(route)) {
 			throw new TypeError(`expected route to be either string or regexp (${typeof route} given)`);
 		}
 
@@ -227,11 +227,7 @@ class BrowserWorker {
 	 * BrowserWorker.deleteRoute("/");
 	 */
 	static deleteRoute(searchedRoute) {
-		if (
-			searchedRoute === null ||
-			searchedRoute === undefined ||
-			(searchedRoute.constructor !== String && searchedRoute.constructor !== RegExp)
-		) {
+		if (!BrowserWorker._isRouteValid(searchedRoute)) {
 			throw new TypeError(`expected route to be either string or regexp (got: ${typeof searchedRoute})`);
 		}
 
@@ -732,6 +728,10 @@ class BrowserWorker {
 		if (BrowserWorker.debugEnabled()) {
 			console.warn(BrowserWorker._getDisplayMessage(message));
 		}
+	}
+
+	static _isRouteValid(route) {
+		return route !== null && route !== undefined && (route.constructor === String || route.constructor === RegExp);
 	}
 }
 
