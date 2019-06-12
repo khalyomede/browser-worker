@@ -70,7 +70,7 @@ BrowserWorker.registerServiceWorker();
 
 ### Register a route and use a cache strategy
 
-In this example, we will ask our service worker to fetch the home page (`/`) from the network first, and from the cache it there is no network available (network first).
+In this example, we will ask our service worker to fetch the home page (`/`) from the network first, and from the cache if there is no network available (network first).
 
 ```javascript
 // myapp/service-worker.js
