@@ -44,6 +44,22 @@ class BrowserWorker {
 	}
 
 	/**
+	 * Enable waiting others previously installed service workers before installing the new one.
+	 *
+	 * @return {BrowserWorker}
+	 * @since 0.3.0
+	 * @example
+	 * import { BrowserWorker } from "@khalyomede/browser-worker";
+	 *
+	 * BrowserWorker.enableWaitingOtherInstances();
+	 */
+	static enableWaitingOtherInstances() {
+		this._waitOtherInstances = true;
+
+		return this;
+	}
+
+	/**
 	 * Sets the current cache strategy.
 	 *
 	 * @param {String} strategy The name of the strategy.
@@ -197,8 +213,11 @@ class BrowserWorker {
 	/**
 	 * Removes a route by its name or its regexp.
 	 *
+	 * @param {String|RegExp} route The route to remove.
 	 * @return {BrowserWorker}
-	 * @since 0.1.0
+	 * @throws {TypError} If the route is not a String nor a RegExp.
+	 * @throws {Error} If the route is an empty String.
+	 * @since 0.3.0
 	 * @example
 	 * import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";
 	 *
@@ -207,15 +226,32 @@ class BrowserWorker {
 	 *
 	 * BrowserWorker.deleteRoute("/");
 	 */
-	static deleteRoute() {
+	static deleteRoute(searchedRoute) {
+		if (
+			searchedRoute === null ||
+			searchedRoute === undefined ||
+			(searchedRoute.constructor !== String && searchedRoute.constructor !== RegExp)
+		) {
+			throw new TypeError(`expected route to be either string or regexp (got: ${typeof searchedRoute})`);
+		}
+
+		if (searchedRoute.constructor === String && searchedRoute.trim().length === 0) {
+			throw new Error("expected route not to be empty");
+		}
+
+		BrowserWorker._routes = BrowserWorker._routes.filter(route => route.route !== searchedRoute);
+
 		return this;
 	}
 
 	/**
 	 * Delete all routes.
 	 *
+	 * @param {Array<String|RegExp>} searchedRoutes The routes to remove.
 	 * @return {BrowserWorker}
-	 * @since 0.1.0
+	 * @throws {TypeError} If one of the route is not a String nor a RegExp.
+	 * @throws {Error} If one of the route is an empty string.
+	 * @since 0.3.0
 	 * @example
 	 * import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";
 	 *
@@ -224,7 +260,11 @@ class BrowserWorker {
 	 *
 	 * BrowserWorker.deleteRoutes();
 	 */
-	static deleteRoutes() {
+	static deleteRoutes(searchedRoutes) {
+		for (const route of searchedRoutes) {
+			BrowserWorker.deleteRoute(route);
+		}
+
 		return this;
 	}
 
@@ -465,6 +505,22 @@ class BrowserWorker {
 	}
 
 	/**
+	 * Prevent logging in console what BrowserWorker is doing.
+	 *
+	 * @return {BrowserWorker}
+	 * @since 0.3.0
+	 * @example
+	 * import { BrowserWorker } from "@khalyomede/browser-worker";
+	 *
+	 * BrowserWorker.disableDebug();
+	 */
+	static disableDebug() {
+		BrowserWorker._debug = false;
+
+		return this;
+	}
+
+	/**
 	 * Returns true if the debug mode has been enabled, else returns false.
 	 *
 	 * @return {Boolean}
@@ -476,6 +532,31 @@ class BrowserWorker {
 	 */
 	static debugEnabled() {
 		return BrowserWorker._debug;
+	}
+
+	/**
+	 * Reset the entire BrowserWorker state (e.g. setting its properties to their default values).
+	 *
+	 * @return {BrowserWorker}
+	 * @since 0.3.0
+	 * @example
+	 * import { BrowserWorker } from "@khalyomede/browser-worker";
+	 *
+	 * BrowserWorker.reset();
+	 * @todo Create constants and use them instead of raw values.
+	 */
+	static reset() {
+		BrowserWorker._cacheStrategy = "";
+		BrowserWorker._currentCacheName = "";
+		BrowserWorker._activeCachesName = [];
+		BrowserWorker._routes = [];
+		BrowserWorker._currentRoute = "";
+		BrowserWorker._debug = false;
+		BrowserWorker._waitOtherInstances = true;
+		BrowserWorker._controlAllTabs = false;
+		BrowserWorker._serviceWorkerPath = "/service-worker.js";
+
+		return this;
 	}
 
 	/**
