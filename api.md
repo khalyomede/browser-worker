@@ -8,13 +8,16 @@
   - [BrowserWorker.debugEnabled()](#browserworkerdebugenabled)
   - [BrowserWorker.deleteRoute()](#browserworkerdeleteroute)
   - [BrowserWorker.deleteRoutes()](#browserworkerdeleteroutes)
+  - [BrowserWorker.disableDebug()](#browserworkerdisabledebug)
   - [BrowserWorker.disableWaitingOtherInstances()](#browserworkerdisablewaitingotherinstances)
   - [BrowserWorker.enableControlOverAllTabs()](#browserworkerenablecontroloveralltabs)
   - [BrowserWorker.enableDebug()](#browserworkerenabledebug)
+  - [BrowserWorker.enableWaitingOtherInstances()](#browserworkerenablewaitingotherinstances)
   - [BrowserWorker.getCacheStrategy()](#browserworkergetcachestrategy)
   - [BrowserWorker.getRoutes()](#browserworkergetroutes)
   - [BrowserWorker.hasRoute()](#browserworkerhasroute)
   - [BrowserWorker.registerServiceWorker()](#browserworkerregisterserviceworker)
+  - [BrowserWorker.reset()](#browserworkerreset)
   - [BrowserWorker.resetCacheStrategy()](#browserworkerresetcachestrategy)
   - [BrowserWorker.resetRoutes()](#browserworkerresetroutes)
   - [BrowserWorker.setCacheStrategy()](#browserworkersetcachestrategy)
@@ -76,7 +79,7 @@ import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.debug
 
 Removes a route by its name or its regexp.
 
-**since**: v0.1.0
+**since**: v0.3.0
 
 **returns** BrowserWorker
 
@@ -90,7 +93,7 @@ import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";Brow
 
 Delete all routes.
 
-**since**: v0.1.0
+**since**: v0.3.0
 
 **returns** BrowserWorker
 
@@ -98,6 +101,20 @@ Delete all routes.
 
 ```javascript
 import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST);BrowserWorker.addRoute("/").addRoute("/about");BrowserWorker.deleteRoutes();
+```
+
+### BrowserWorker.disableDebug()
+
+Prevent logging in console what BrowserWorker is doing.
+
+**since**: v0.3.0
+
+**returns** BrowserWorker
+
+**examples**
+
+```javascript
+import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.disableDebug();
 ```
 
 ### BrowserWorker.disableWaitingOtherInstances()
@@ -140,6 +157,20 @@ Logs in console what is BrowserWorker doing.
 
 ```javascript
 import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.enableDebug();
+```
+
+### BrowserWorker.enableWaitingOtherInstances()
+
+Enable waiting others previously installed service workers before installing the new one.
+
+**since**: v0.3.0
+
+**returns** BrowserWorker
+
+**examples**
+
+```javascript
+import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.enableWaitingOtherInstances();
 ```
 
 ### BrowserWorker.getCacheStrategy()
@@ -196,6 +227,20 @@ Registers the service worker. Should be used in your main javascript file (and n
 
 ```javascript
 import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.setServiceWorkerPath("/service-worker.js").registerServiceWorker();
+```
+
+### BrowserWorker.reset()
+
+Reset the entire BrowserWorker state (e.g. setting its properties to their default values).
+
+**since**: v0.3.0
+
+**returns** BrowserWorker
+
+**examples**
+
+```javascript
+import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.reset();
 ```
 
 ### BrowserWorker.resetCacheStrategy()
