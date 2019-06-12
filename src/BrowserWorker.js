@@ -704,9 +704,7 @@ class BrowserWorker {
 	 * @return {Void}
 	 */
 	static _displayInfo(message) {
-		if (BrowserWorker.debugEnabled()) {
-			console.info(BrowserWorker._getDisplayMessage(message));
-		}
+		BrowserWorker._displayMessage(message, "info");
 	}
 
 	/**
@@ -714,9 +712,7 @@ class BrowserWorker {
 	 * @return {Void}
 	 */
 	static _displayError(message) {
-		if (BrowserWorker.debugEnabled()) {
-			console.error(BrowserWorker._getDisplayMessage(message));
-		}
+		BrowserWorker._displayMessage(message, "error");
 	}
 
 	/**
@@ -725,8 +721,17 @@ class BrowserWorker {
 	 * @return {Void}
 	 */
 	static _displayWarning(message) {
+		BrowserWorker._displayMessage(message, "warn");
+	}
+
+	/**
+	 *
+	 * @param {String} message The message
+	 * @param {String} severity One of the following: "info", "warn", "error", "log".
+	 */
+	static _displayMessage(message, severity) {
 		if (BrowserWorker.debugEnabled()) {
-			console.warn(BrowserWorker._getDisplayMessage(message));
+			console[severity](BrowserWorker._getDisplayMessage(message));
 		}
 	}
 
