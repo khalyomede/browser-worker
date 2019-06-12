@@ -2,8 +2,7 @@ import { expect } from "chai";
 import { BrowserWorker, CacheStrategy } from "../lib/main";
 
 afterEach(() => {
-	BrowserWorker.resetCacheStrategy();
-	BrowserWorker.resetRoutes();
+	BrowserWorker.reset();
 });
 
 describe("BrowserWorker", () => {
@@ -15,6 +14,17 @@ describe("BrowserWorker", () => {
 			expect(BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoute("/")._routes).to.be.deep.equal([
 				{ cacheName: "", route: "/", strategy: "network-first" }
 			]));
+
+		it("should stack with previous routes", () => {
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+					.addRoute("/")
+					.addRoute("/about")._routes
+			).to.be.deep.equal([
+				{ cacheName: "", route: "/", strategy: "network-first" },
+				{ cacheName: "", route: "/about", strategy: "network-first" }
+			]);
+		});
 
 		it("should throw a TypeError if the route is not a String nor a RegExp", () =>
 			expect(function() {
@@ -42,10 +52,39 @@ describe("BrowserWorker", () => {
 			expect(BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoutes(["/", "/about"])).to.be.equal(
 				BrowserWorker
 			));
+
+		it("should store the routes on the property", () =>
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoutes(["/", "/about"])._routes
+			).to.be.deep.equal([
+				{ cacheName: "", route: "/", strategy: "network-first" },
+				{ cacheName: "", route: "/about", strategy: "network-first" }
+			]));
+
+		it("should stack with previous routes", () =>
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+					.addRoute("/")
+					.addRoutes(["/about", "/contact"])._routes
+			).to.be.deep.equal([
+				{ cacheName: "", route: "/", strategy: "network-first" },
+				{ cacheName: "", route: "/about", strategy: "network-first" },
+				{ cacheName: "", route: "/contact", strategy: "network-first" }
+			]));
 	});
 
 	describe("debugEnabled", () => {
 		it("should return false by default", () => expect(BrowserWorker.debugEnabled()).to.be.false);
+
+		it("should return true if debug has been enabled", () =>
+			expect(BrowserWorker.enableDebug().debugEnabled()).to.be.true);
+
+		it("should return false if debug has been enabled, then disabled", () =>
+			expect(
+				BrowserWorker.enableDebug()
+					.disableDebug()
+					.debugEnabled()
+			).to.be.false);
 	});
 
 	describe("deleteRoute", () => {
@@ -55,6 +94,44 @@ describe("BrowserWorker", () => {
 					.addRoute("/")
 					.deleteRoute("/")
 			).to.be.equal(BrowserWorker));
+
+		it("should correctly delete the route", () =>
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+					.addRoute("/")
+					.deleteRoute("/")._routes
+			).to.be.deep.equal([]));
+
+		it("should correctly delete all the occurence of the same route", () =>
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+					.addRoute("/")
+					.setCacheStrategy(CacheStrategy.CACHE_FIRST)
+					.addRoute("/")
+					.deleteRoute("/")._routes
+			).to.be.deep.equal([]));
+
+		it("should correctly delete the regexp route", () => {
+			const route = /\.(jpg|jpeg|png|svg|webp)$/;
+
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+					.addRoute(route)
+					.deleteRoute(route)._routes
+			).to.be.deep.equal([]);
+		});
+
+		it("should correctly delete all the occurence of the regexp route", () => {
+			const route = /\.(jpg|jpeg|png|svg|webp)$/;
+
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+					.addRoute(route)
+					.setCacheStrategy(CacheStrategy.CACHE_FIRST)
+					.addRoute(route)
+					.deleteRoute(route)._routes
+			).to.be.deep.equal([]);
+		});
 	});
 
 	describe("deleteRoutes", () => {
@@ -69,6 +146,18 @@ describe("BrowserWorker", () => {
 	describe("disableWaitingOtherInstances", () => {
 		it("should return a BrowserWorker instance", () =>
 			expect(BrowserWorker.disableWaitingOtherInstances()).to.be.equal(BrowserWorker));
+
+		it("should return true by default", () => expect(BrowserWorker._waitOtherInstances).to.be.true);
+
+		it("should return false if the option has been disabled", () =>
+			expect(BrowserWorker.disableWaitingOtherInstances()._waitOtherInstances).to.be.false);
+
+		it("should return true if the option has been enabled", () =>
+			expect(BrowserWorker.enableWaitingOtherInstances()._waitOtherInstances).to.be.true);
+
+		it("should return true if the option has been disabled then enabled", () =>
+			expect(BrowserWorker.disableWaitingOtherInstances().enableWaitingOtherInstances()._waitOtherInstances).to.be
+				.true);
 	});
 
 	describe("enableControlOverAllTabs", () => {
