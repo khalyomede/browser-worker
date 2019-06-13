@@ -187,10 +187,52 @@ describe("BrowserWorker", () => {
 	describe("setCacheStrategy", () => {
 		it("should return an instance of BrowserWorker", () =>
 			expect(BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)).to.be.equal(BrowserWorker));
+
+		it("should correctly set the cache strategy on the property", () =>
+			expect(BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)._cacheStrategy).to.be.equal(
+				CacheStrategy.NETWORK_FIRST
+			));
+
+		it("should throw a TypeError if the cache strategy is not a String", () =>
+			expect(() => BrowserWorker.setCacheStrategy(42)).to.throw(TypeError));
+
+		it("should throw a TypeError message if the cache strategy is not a String", () =>
+			expect(() => BrowserWorker.setCacheStrategy(42)).to.throw("expected strategy to be a string (number given)"));
+
+		it("should throw an Error if the cache strategy is not supported", () =>
+			expect(() => BrowserWorker.setCacheStrategy("foo")).to.throw(Error));
+
+		it("should throw an Error message if the cache strategy is not supported", () =>
+			expect(() => BrowserWorker.setCacheStrategy("foo")).to.throw(
+				`unsupported strategy foo (use one of the following: ${CacheStrategy.getSupportedStrategies().join(", ")})`
+			));
 	});
 
 	describe("setServiceWorkerPath", () => {
 		it("should return an instance of BrowserWorker", () =>
 			expect(BrowserWorker.setServiceWorkerPath("/service-worker.js")).to.be.equal(BrowserWorker));
+
+		it("should correctly set the service worker path", () =>
+			expect(BrowserWorker.setServiceWorkerPath("/service-worker.min.js")._serviceWorkerPath).to.be.equal(
+				"/service-worker.min.js"
+			));
+	});
+
+	describe("_cacheStrategyValid", () => {
+		it("should return false when no cache strategy has been set", () =>
+			expect(BrowserWorker._cacheStrategyValid()).to.be.false);
+
+		it("should return true if the cache strategy is not empty", () =>
+			expect(BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)._cacheStrategyValid()).to.be.true);
+	});
+
+	describe("_isRouteValid", () => {
+		it("should return true if the route is a filled string", () => expect(BrowserWorker._isRouteValid("/")).to.be.true);
+
+		it("should return true if the route is a valid regexp", () =>
+			expect(BrowserWorker._isRouteValid(/\.(js|css)/)).to.be.true);
+
+		it("should return false if the route is neither string nor regexp", () =>
+			expect(BrowserWorker._isRouteValid(42)).to.be.false);
 	});
 });
