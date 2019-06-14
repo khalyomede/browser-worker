@@ -267,6 +267,7 @@ class BrowserWorker {
 	/**
 	 * Returns true if at least one route matches the route or the regexp, else returns false.
 	 *
+	 * @param {String|RegExp} searchedRoute The route to search for.
 	 * @return {Boolean}
 	 * @since 0.1.0
 	 * @example
@@ -281,10 +282,14 @@ class BrowserWorker {
 	 *  console.log("has not route /");
 	 * }
 	 */
-	static hasRoute() {
-		let hasRoute = false;
+	static hasRoute(searchedRoute) {
+		for (const route of BrowserWorker._routes) {
+			if (route.route === searchedRoute) {
+				return true;
+			}
+		}
 
-		return hasRoute;
+		return false;
 	}
 
 	/**
