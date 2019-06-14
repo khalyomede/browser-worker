@@ -8,7 +8,7 @@ class BrowserWorker {
 	static _currentRoute = "";
 	static _debug = false;
 	static _waitOtherInstances = true;
-	static _controlAllTabs = false;
+	static _controlOverAllTabs = false;
 	static _serviceWorkerPath = "/service-worker.js";
 
 	/**
@@ -22,7 +22,7 @@ class BrowserWorker {
 	 * BrowserWorker.enableControlOverAllTabs();
 	 */
 	static enableControlOverAllTabs() {
-		this._controlAllTabs = true;
+		this._controlOverAllTabs = true;
 
 		return this;
 	}
@@ -379,7 +379,7 @@ class BrowserWorker {
 	 */
 	static listenRequests() {
 		self.addEventListener("activate", event => {
-			if (this._controlAllTabs) {
+			if (this._controlOverAllTabs) {
 				clients.claim();
 
 				BrowserWorker._displayInfo("controlling all tabs.");
@@ -550,7 +550,7 @@ class BrowserWorker {
 		BrowserWorker._currentRoute = "";
 		BrowserWorker._debug = false;
 		BrowserWorker._waitOtherInstances = true;
-		BrowserWorker._controlAllTabs = false;
+		BrowserWorker._controlOverAllTabs = false;
 		BrowserWorker._serviceWorkerPath = "/service-worker.js";
 
 		return this;
