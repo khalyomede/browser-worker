@@ -180,9 +180,16 @@ describe("BrowserWorker", () => {
 
 	describe("hasRoute", () => {
 		it("should return false by default", () => expect(BrowserWorker.hasRoute("/")).to.be.false);
-	});
 
-	describe("registerServiceWorker", () => {});
+		it("should return false if the route is not found", () => expect(BrowserWorker.hasRoute("/foo")).to.be.false);
+
+		it("should return true if the route has been registered", () =>
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+					.addRoute("/")
+					.hasRoute("/")
+			).to.be.true);
+	});
 
 	describe("setCacheStrategy", () => {
 		it("should return an instance of BrowserWorker", () =>
