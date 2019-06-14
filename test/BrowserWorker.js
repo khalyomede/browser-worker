@@ -168,6 +168,8 @@ describe("BrowserWorker", () => {
 	describe("enableDebug", () => {
 		it("should return an instance of BrowserWorker", () =>
 			expect(BrowserWorker.enableDebug()).to.be.equal(BrowserWorker));
+
+		it("should correctly enable the debug", () => expect(BrowserWorker.enableDebug()._debug).to.be.true);
 	});
 
 	describe("getCacheStrategy", () => {
