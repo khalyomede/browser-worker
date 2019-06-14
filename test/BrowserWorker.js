@@ -176,6 +176,16 @@ describe("BrowserWorker", () => {
 
 	describe("getRoutes", () => {
 		it("should return an empty array by default", () => expect(BrowserWorker.getRoutes()).to.be.deep.equal([]));
+
+		it("should return the registered routes", () =>
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+					.addRoutes(["/", "/about"])
+					.getRoutes()
+			).to.be.deep.equal([
+				{ cacheName: "", route: "/", strategy: "network-first" },
+				{ cacheName: "", route: "/about", strategy: "network-first" }
+			]));
 	});
 
 	describe("hasRoute", () => {
