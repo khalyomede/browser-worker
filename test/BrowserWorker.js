@@ -163,6 +163,9 @@ describe("BrowserWorker", () => {
 	describe("enableControlOverAllTabs", () => {
 		it("should return an instance of BrowserWorker", () =>
 			expect(BrowserWorker.enableControlOverAllTabs()).to.be.equal(BrowserWorker));
+
+		it("should correctly set the related property to true", () =>
+			expect(BrowserWorker.enableControlOverAllTabs()._controlOverAllTabs).to.be.true);
 	});
 
 	describe("enableDebug", () => {
