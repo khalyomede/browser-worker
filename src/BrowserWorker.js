@@ -694,61 +694,9 @@ class BrowserWorker {
 
 			if (BrowserWorker._currentRouteMatches(event.request.url)) {
 				if (BrowserWorker._currentRouteStrategyIs(CacheStrategy.NETWORK_FIRST)) {
-					event.respondWith(
-						fetch(event.request)
-							.then(response => {
-								if (response.ok) {
-									caches
-										.open(BrowserWorker._getCurrentRouteCacheName())
-										.then(cache => cache.put(event.request, response.clone()));
-
-									BrowserWorker._displayInfo(
-										`[NetworkFirst] fetched ${event.request.url} from the network (and put it in the cache)`
-									);
-
-									return response.clone();
-								} else {
-									throw new Error();
-								}
-							})
-							.catch(() => {
-								BrowserWorker._displayInfo(
-									`[NetworkFirst] fetched ${event.request.url} from the cache because it seems the network is down`
-								);
-
-								return caches.match(event.request);
-							})
-					);
+					BrowserWorker._executeNetworkFirstStrategy(event);
 				} else if (BrowserWorker._currentRouteStrategyIs(CacheStrategy.CACHE_FIRST)) {
-					event.respondWith(
-						caches.match(event.request).then(function(response) {
-							if (response) {
-								BrowserWorker._displayInfo(`[CacheFirst] fetched ${event.request.url} from the cache`);
-
-								return response;
-							}
-
-							return fetch(event.request).then(function(response) {
-								if (!response || response.status !== 200 || response.type !== "basic") {
-									return response;
-								}
-
-								const responseToCache = response.clone();
-
-								caches.open(BrowserWorker._getCurrentRouteCacheName()).then(function(cache) {
-									cache.put(event.request, responseToCache);
-								});
-
-								BrowserWorker._displayInfo(
-									`[CacheFirst] No cache found for ${
-										event.request.url
-									}, so the resource have been fetched from the network and stored in cache`
-								);
-
-								return response;
-							});
-						})
-					);
+					BrowserWorker._executeCacheFirstStrategy(event);
 				} else {
 					BrowserWorker._displayWarning(`unsupported strategy ${BrowserWorker._currentRoute.strategy}`);
 				}
@@ -758,6 +706,66 @@ class BrowserWorker {
 				);
 			}
 		});
+	}
+
+	static _executeNetworkFirstStrategy(event) {
+		event.respondWith(
+			fetch(event.request)
+				.then(response => {
+					if (response.ok) {
+						caches
+							.open(BrowserWorker._getCurrentRouteCacheName())
+							.then(cache => cache.put(event.request, response.clone()));
+
+						BrowserWorker._displayInfo(
+							`[NetworkFirst] fetched ${event.request.url} from the network (and put it in the cache)`
+						);
+
+						return response.clone();
+					} else {
+						throw new Error();
+					}
+				})
+				.catch(() => {
+					BrowserWorker._displayInfo(
+						`[NetworkFirst] fetched ${event.request.url} from the cache because it seems the network is down`
+					);
+
+					return caches.match(event.request);
+				})
+		);
+	}
+
+	static _executeCacheFirstStrategy(event) {
+		event.respondWith(
+			caches.match(event.request).then(function(response) {
+				if (response) {
+					BrowserWorker._displayInfo(`[CacheFirst] fetched ${event.request.url} from the cache`);
+
+					return response;
+				}
+
+				return fetch(event.request).then(function(response) {
+					if (!response || response.status !== 200 || response.type !== "basic") {
+						return response;
+					}
+
+					const responseToCache = response.clone();
+
+					caches.open(BrowserWorker._getCurrentRouteCacheName()).then(function(cache) {
+						cache.put(event.request, responseToCache);
+					});
+
+					BrowserWorker._displayInfo(
+						`[CacheFirst] No cache found for ${
+							event.request.url
+						}, so the resource have been fetched from the network and stored in cache`
+					);
+
+					return response;
+				});
+			})
+		);
 	}
 }
 
