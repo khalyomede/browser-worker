@@ -45,6 +45,18 @@ describe("BrowserWorker", () => {
 			expect(function() {
 				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoute("");
 			}).to.throw("expected route string not to be empty"));
+
+		it("should throw an Error if the cache strategy is invalid", () => {
+			BrowserWorker._cacheStrategy = "";
+
+			expect(() => BrowserWorker.addRoute("/")).to.throw(Error);
+
+			expect(() => BrowserWorker.addRoute("/")).to.throw(
+				`the cache strategy is invalid (use BrowserWorker.setCacheStrategy() if you did not yet with one of the following value: ${CacheStrategy.getSupportedStrategies().join(
+					", "
+				)})`
+			);
+		});
 	});
 
 	describe("addRoutes", () => {
@@ -132,6 +144,20 @@ describe("BrowserWorker", () => {
 					.deleteRoute(route)._routes
 			).to.be.deep.equal([]);
 		});
+
+		it("should throw a TypeError if the route is not a string nor a regexp", () =>
+			expect(() => BrowserWorker.deleteRoute(42)).to.throw(TypeError));
+
+		it("should throw a TypeError message if the route is not a string nor a regexp", () =>
+			expect(() => BrowserWorker.deleteRoute(42)).to.throw(
+				"expected route to be either string or regexp (got: number)"
+			));
+
+		it("should throw an Error if the route is an empty string", () =>
+			expect(() => BrowserWorker.deleteRoute("")).to.throw(Error));
+
+		it("should throw an Error message if the route is an empty string", () =>
+			expect(() => BrowserWorker.deleteRoute("")).to.throw("expected route not to be empty"));
 	});
 
 	describe("deleteRoutes", () => {
@@ -250,6 +276,53 @@ describe("BrowserWorker", () => {
 			expect(BrowserWorker.setServiceWorkerPath("/service-worker.min.js")._serviceWorkerPath).to.be.equal(
 				"/service-worker.min.js"
 			));
+	});
+
+	describe("setCacheName", () => {
+		it("should return an instance of BrowserWorker", () =>
+			expect(BrowserWorker.setCacheName("foo")).to.be.equal(BrowserWorker));
+
+		it("should set the cache name of the next route prpperly", () =>
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+					.setCacheName("network-first-v1")
+					.addRoute("/")._routes
+			).to.be.deep.equal([{ cacheName: "network-first-v1", route: "/", strategy: "network-first" }]));
+
+		it("should properly set the property value", () => {
+			const cacheName = "foo";
+			expect(BrowserWorker.setCacheName(cacheName)._currentCacheName).to.be.equal(cacheName);
+		});
+
+		it("should throw a TypeError if the cache name is not a string", () =>
+			expect(() => BrowserWorker.setCacheName(42)).to.throw(TypeError));
+
+		it("should throw a TypeError if the cache name is not a string", () =>
+			expect(() => BrowserWorker.setCacheName(42)).to.throw("expected cache name to be a string (got: number)"));
+
+		it("should throw an Error if the cache name is empty", () =>
+			expect(() => BrowserWorker.setCacheName("")).to.throw(Error));
+
+		it("should throw an Error if the cache name is empty", () =>
+			expect(() => BrowserWorker.setCacheName("")).to.throw("expected cache name not to be empty"));
+	});
+
+	describe("resetCacheStrategy", () => {
+		it("should return an instance of BrowserWorker", () =>
+			expect(BrowserWorker.resetCacheStrategy()).to.be.equal(BrowserWorker));
+
+		it("should correctly remove the cache strategy", () =>
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).resetCacheStrategy()._cacheStrategy
+			).to.be.equal(""));
+	});
+
+	describe("resetRoutes", () => {
+		it("should return an instance of BrowserWorker", () =>
+			expect(BrowserWorker.resetRoutes()).to.be.equal(BrowserWorker));
+
+		it("should set the routes property to an empty array", () =>
+			expect(BrowserWorker.resetRoutes()._routes).to.be.deep.equal([]));
 	});
 
 	describe("_cacheStrategyValid", () => {
