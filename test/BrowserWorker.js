@@ -172,6 +172,18 @@ describe("BrowserWorker", () => {
 
 	describe("getCacheStrategy", () => {
 		it("should return empty by default", () => expect(BrowserWorker.getCacheStrategy()).to.be.equal(""));
+
+		it("should return the last cache strategy", () =>
+			expect(BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).getCacheStrategy()).to.be.equal(
+				CacheStrategy.NETWORK_FIRST
+			));
+
+		it("should return the last cache strategy even if it has been set multiple times", () =>
+			expect(
+				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+					.setCacheStrategy(CacheStrategy.CACHE_FIRST)
+					.getCacheStrategy()
+			).to.be.equal(CacheStrategy.CACHE_FIRST));
 	});
 
 	describe("getRoutes", () => {
