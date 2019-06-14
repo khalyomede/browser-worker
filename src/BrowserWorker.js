@@ -269,7 +269,7 @@ class BrowserWorker {
 	 *
 	 * @param {String|RegExp} searchedRoute The route to search for.
 	 * @return {Boolean}
-	 * @since 0.1.0
+	 * @since 0.4.0
 	 * @example
 	 * import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";
 	 *
@@ -296,6 +296,8 @@ class BrowserWorker {
 	 *
 	 * @param {String} name
 	 * @return {BrowserWorker}
+	 * @throws {TypeError} If the cache name is not a string.
+	 * @throws {Error} If the cache name is an empty string.
 	 * @since 0.1.0
 	 * @example
 	 * import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";
@@ -304,6 +306,14 @@ class BrowserWorker {
 	 * 	.setCacheName("network-first-v1");
 	 */
 	static setCacheName(name) {
+		if (typeof name !== "string") {
+			throw new TypeError(`expected cache name to be a string (got: ${typeof name})`);
+		}
+
+		if (name.trim().length === 0) {
+			throw new Error("expected cache name not to be empty");
+		}
+
 		BrowserWorker._currentCacheName = name;
 		BrowserWorker._activeCachesName.push(name);
 
