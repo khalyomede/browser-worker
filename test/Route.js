@@ -118,4 +118,16 @@ describe("Route", () => {
 		it("should return false if the url does not match the regex route", () =>
 			expect(new Route(Route.ASSETS).matches("http://localhost:3000/font/Simple-Line-Icons.ttf")));
 	});
+
+	describe("isFilled", () => {
+		it("should return true if the route is a non empty string", () => expect(Route.isFilled("/")).to.be.true);
+
+		it("should return true if the route is a non empty regular expression", () =>
+			expect(Route.isFilled(Route.ASSETS)).to.be.true);
+
+		it("should return false if the route is an empty string", () => expect(Route.isFilled("")).to.be.false);
+
+		it("should return true if the route is an empty regular expression", () =>
+			expect(Route.isFilled(new RegExp())).to.be.false);
+	});
 });
