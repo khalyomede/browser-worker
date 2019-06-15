@@ -1,5 +1,6 @@
 import CacheStrategy from "./CacheStrategy";
 import Console from "./Console";
+import Response from "./Response";
 
 class BrowserWorker {
 	static _cacheStrategy = "";
@@ -633,9 +634,9 @@ class BrowserWorker {
 
 			if (BrowserWorker._currentRouteMatches(event.request.url)) {
 				if (BrowserWorker._currentRouteStrategyIs(CacheStrategy.NETWORK_FIRST)) {
-					BrowserWorker._executeNetworkFirstStrategy(event);
+					Response.getFromNetworkFirst(event, BrowserWorker._getCurrentRouteCacheName());
 				} else if (BrowserWorker._currentRouteStrategyIs(CacheStrategy.CACHE_FIRST)) {
-					BrowserWorker._executeCacheFirstStrategy(event);
+					Response.getFromCacheFirst(event, BrowserWorker._getCurrentRouteCacheName());
 				} else {
 					Console.displayWarning(`unsupported strategy ${BrowserWorker._currentRoute.strategy}`);
 				}
@@ -645,66 +646,6 @@ class BrowserWorker {
 				);
 			}
 		});
-	}
-
-	static _executeNetworkFirstStrategy(event) {
-		event.respondWith(
-			fetch(event.request)
-				.then(response => {
-					if (response.ok) {
-						caches
-							.open(BrowserWorker._getCurrentRouteCacheName())
-							.then(cache => cache.put(event.request, response.clone()));
-
-						Console.displayInfo(
-							`[NetworkFirst] fetched ${event.request.url} from the network (and put it in the cache)`
-						);
-
-						return response.clone();
-					} else {
-						throw new Error();
-					}
-				})
-				.catch(() => {
-					Console.displayInfo(
-						`[NetworkFirst] fetched ${event.request.url} from the cache because it seems the network is down`
-					);
-
-					return caches.match(event.request);
-				})
-		);
-	}
-
-	static _executeCacheFirstStrategy(event) {
-		event.respondWith(
-			caches.match(event.request).then(function(response) {
-				if (response) {
-					Console.displayInfo(`[CacheFirst] fetched ${event.request.url} from the cache`);
-
-					return response;
-				}
-
-				return fetch(event.request).then(function(response) {
-					if (!response || response.status !== 200 || response.type !== "basic") {
-						return response;
-					}
-
-					const responseToCache = response.clone();
-
-					caches.open(BrowserWorker._getCurrentRouteCacheName()).then(function(cache) {
-						cache.put(event.request, responseToCache);
-					});
-
-					Console.displayInfo(
-						`[CacheFirst] No cache found for ${
-							event.request.url
-						}, so the resource have been fetched from the network and stored in cache`
-					);
-
-					return response;
-				});
-			})
-		);
 	}
 }
 
