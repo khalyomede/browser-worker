@@ -317,14 +317,4 @@ describe("BrowserWorker", () => {
 		it("should set the routes property to an empty array", () =>
 			expect(BrowserWorker.resetRoutes()._routes).to.be.deep.equal([]));
 	});
-
-	describe("_isRouteValid", () => {
-		it("should return true if the route is a filled string", () => expect(BrowserWorker._isRouteValid("/")).to.be.true);
-
-		it("should return true if the route is a valid regexp", () =>
-			expect(BrowserWorker._isRouteValid(/\.(js|css)/)).to.be.true);
-
-		it("should return false if the route is neither string nor regexp", () =>
-			expect(BrowserWorker._isRouteValid(42)).to.be.false);
-	});
 });
