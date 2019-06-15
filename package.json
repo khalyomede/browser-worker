@@ -54,9 +54,11 @@
 	},
 	"files": [
 		"lib/BrowserWorker.js",
+		"lib/Cache.js",
 		"lib/CacheStrategy.js",
 		"lib/Console.js",
 		"lib/main.js",
+		"lib/Response.js",
 		"lib/Route.js"
 	],
 	"dependencies": {
