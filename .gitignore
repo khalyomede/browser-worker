@@ -3,3 +3,4 @@ example
 yarn-error.log
 coverage
 .nyc_output
+.stryker-tmp

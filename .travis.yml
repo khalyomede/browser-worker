@@ -1,6 +1,11 @@
 language: node_js
 node_js:
   - "10"
-after_success: yarn coverage
+after_success:
+  - yarn coverage
+  - yarn mutate
 before_install:
   - npm install -g yarn
+env:
+  global:
+    secure: LGD5juiNtyPeZtzJMJDNUrs+Ps443xdeLw5/Wp+TrJ7ulhRJvquDZAnXGyCBF8yXvpw/wxuBgyi1Dx1ni4CkKllrQ9S0aNX7CSSJ6q/qiv0YcxZyj35BGbzfJpw5epPLjUHhSLf3jnJYJXXhyZ4oSTYgHAorEf5HGcYHws/cRYVdvUTUdpZEbx7KB2qi3KMbeAIhoQWXgJRBGmRpuWsIwKI7A08DB12gVCa3siAjeJG1S/MWjoAAIq934bkg865LfHiwgbz28XWd8Uri8nxOREk8k0olB65T7ys6pafNVqpEswsPdw3WGf1dxOKuqvieyxIJXVtKmCWR4Kbo2FrZ6NlIP6V7VrNVZTxh9Av2oxrV453ZGI/geZAq7nfIetXvxk2vXPSFG1mUu/4H4zRiAvVVdMKHByWRoTEyQjo5tuzVyTxm/z+b8E5QMN30B0zIWruS29Wn2ZYvS2bRIHYv2G0xNUaaOMTgNO5aM66mCwvToD8m0On3WWsdImbCGw3BlNlfIiWwBULkI+PuDUsGdmtS7rBsACeP9M/tNCPE691zBYb3wOjQMrgpIzbNBFtMGuzFsnmvKe7wEHgK1Q4VfBztUqGGEoiNV3IVH6v/SaQzvn4caP8WPM46TzsH/KkeEKSCTSw/HKFkUvPkOGeQMygQK0AzG2jE3ruSdxynQIQ=
