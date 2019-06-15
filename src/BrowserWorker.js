@@ -1,3 +1,4 @@
+import Cache from "./Cache";
 import CacheStrategy from "./CacheStrategy";
 import Console from "./Console";
 import Response from "./Response";
@@ -303,11 +304,11 @@ class BrowserWorker {
 	 * 	.setCacheName("network-first-v1");
 	 */
 	static setCacheName(name) {
-		if (typeof name !== "string") {
+		if (!Cache.nameIsValid(name)) {
 			throw new TypeError(`expected cache name to be a string (got: ${typeof name})`);
 		}
 
-		if (name.trim().length === 0) {
+		if (!Cache.nameIsFilled(name)) {
 			throw new Error("expected cache name not to be empty");
 		}
 
