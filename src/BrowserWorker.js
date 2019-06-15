@@ -131,7 +131,7 @@ class BrowserWorker {
 			throw new Error("expected route string not to be empty");
 		}
 
-		if (!BrowserWorker._cacheStrategyValid()) {
+		if (!CacheStrategy.isValid(BrowserWorker._cacheStrategy)) {
 			const supportedCacheStrategies = CacheStrategy.getSupportedStrategies().join(", ");
 
 			throw new Error(
@@ -504,13 +504,6 @@ class BrowserWorker {
 		BrowserWorker._routes = [];
 
 		return this;
-	}
-
-	/**
-	 * @return {Boolean}
-	 */
-	static _cacheStrategyValid() {
-		return BrowserWorker._cacheStrategy.trim().length > 0;
 	}
 
 	/**

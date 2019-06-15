@@ -41,6 +41,14 @@ class CacheStrategy {
 	static getSupportedStrategies() {
 		return [CacheStrategy.NETWORK_FIRST, CacheStrategy.CACHE_FIRST];
 	}
+
+	/**
+	 * @param {String} cacheStrategy
+	 * @return {Boolean}
+	 */
+	static isValid(cacheStrategy) {
+		return cacheStrategy.trim().length > 0;
+	}
 }
 
 export default CacheStrategy;

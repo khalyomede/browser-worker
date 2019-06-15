@@ -318,14 +318,6 @@ describe("BrowserWorker", () => {
 			expect(BrowserWorker.resetRoutes()._routes).to.be.deep.equal([]));
 	});
 
-	describe("_cacheStrategyValid", () => {
-		it("should return false when no cache strategy has been set", () =>
-			expect(BrowserWorker._cacheStrategyValid()).to.be.false);
-
-		it("should return true if the cache strategy is not empty", () =>
-			expect(BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)._cacheStrategyValid()).to.be.true);
-	});
-
 	describe("_isRouteValid", () => {
 		it("should return true if the route is a filled string", () => expect(BrowserWorker._isRouteValid("/")).to.be.true);
 
