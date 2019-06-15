@@ -1,4 +1,5 @@
 import CacheStrategy from "./CacheStrategy";
+import Console from "./Console";
 
 class BrowserWorker {
 	static _cacheStrategy = "";
@@ -6,7 +7,6 @@ class BrowserWorker {
 	static _activeCachesName = [];
 	static _routes = [];
 	static _currentRoute = "";
-	static _debug = false;
 	static _waitOtherInstances = true;
 	static _controlOverAllTabs = false;
 	static _serviceWorkerPath = "/service-worker.js";
@@ -352,11 +352,11 @@ class BrowserWorker {
 			navigator.serviceWorker
 				.register(BrowserWorker._serviceWorkerPath)
 				.then(registration => {
-					BrowserWorker._displayInfo(`service worker registered (scope: ${registration.scope}).`);
+					Console.displayInfo(`service worker registered (scope: ${registration.scope}).`);
 				})
 				.catch(function(error) {
-					BrowserWorker._displayError("an error occured while registering your service worker.");
-					BrowserWorker._displayError(error);
+					Console.displayError("an error occured while registering your service worker.");
+					Console.displayError(error);
 				});
 		}
 	}
@@ -404,7 +404,7 @@ class BrowserWorker {
 	 * BrowserWorker.enableDebug();
 	 */
 	static enableDebug() {
-		BrowserWorker._debug = true;
+		Console.enableDebug();
 
 		return this;
 	}
@@ -420,7 +420,7 @@ class BrowserWorker {
 	 * BrowserWorker.disableDebug();
 	 */
 	static disableDebug() {
-		BrowserWorker._debug = false;
+		Console.disableDebug();
 
 		return this;
 	}
@@ -436,7 +436,7 @@ class BrowserWorker {
 	 * BrowserWorker.debugEnabled(); // false
 	 */
 	static debugEnabled() {
-		return BrowserWorker._debug;
+		return Console.debugEnabled();
 	}
 
 	/**
@@ -583,67 +583,6 @@ class BrowserWorker {
 		return BrowserWorker._currentRoute.cacheName;
 	}
 
-	/**
-	 *
-	 * @param {String} message
-	 * @return {String}
-	 */
-	static _getDisplayMessage(message) {
-		const date = new Date();
-		const hours = date
-			.getHours()
-			.toString()
-			.padStart(2, "0");
-		const minutes = date
-			.getMinutes()
-			.toString()
-			.padStart(2, "0");
-		const seconds = date
-			.getSeconds()
-			.toString()
-			.padStart(2, "0");
-		const milliseconds = date.getMilliseconds();
-		const timestamp = `${hours}:${minutes}:${seconds}.${milliseconds}`;
-
-		return `[BrowserWorker][${timestamp}] ${message}`;
-	}
-
-	/**
-	 * @param {String} message
-	 * @return {Void}
-	 */
-	static _displayInfo(message) {
-		BrowserWorker._displayMessage(message, "info");
-	}
-
-	/**
-	 * @param {String} message
-	 * @return {Void}
-	 */
-	static _displayError(message) {
-		BrowserWorker._displayMessage(message, "error");
-	}
-
-	/**
-	 *
-	 * @param {String} message
-	 * @return {Void}
-	 */
-	static _displayWarning(message) {
-		BrowserWorker._displayMessage(message, "warn");
-	}
-
-	/**
-	 *
-	 * @param {String} message The message
-	 * @param {String} severity One of the following: "info", "warn", "error", "log".
-	 */
-	static _displayMessage(message, severity) {
-		if (BrowserWorker.debugEnabled()) {
-			console[severity](BrowserWorker._getDisplayMessage(message));
-		}
-	}
-
 	static _isRouteValid(route) {
 		return route !== null && route !== undefined && (route.constructor === String || route.constructor === RegExp);
 	}
@@ -653,9 +592,9 @@ class BrowserWorker {
 			if (this._controlOverAllTabs) {
 				clients.claim();
 
-				BrowserWorker._displayInfo("controlling all tabs.");
+				Console.displayInfo("controlling all tabs.");
 			} else {
-				BrowserWorker._displayError(
+				Console.displayError(
 					"controlling only this tab (if you want to controll all tabs, use BrowserWorker.enableControlOverAllTabs())"
 				);
 			}
@@ -667,7 +606,7 @@ class BrowserWorker {
 						cacheNames
 							.filter(cacheName => !BrowserWorker._activeCachesName.includes(cacheName))
 							.map(cacheName => caches.delete(cacheName)),
-						BrowserWorker._displayInfo("cleaned old caches.")
+						Console.displayInfo("cleaned old caches.")
 					);
 				})
 			);
@@ -679,9 +618,9 @@ class BrowserWorker {
 			if (!this._waitOtherInstances) {
 				self.skipWaiting();
 
-				BrowserWorker._displayInfo("skipped waiting for other instances to finish.");
+				Console.displayInfo("skipped waiting for other instances to finish.");
 			} else {
-				BrowserWorker._displayInfo(
+				Console.displayInfo(
 					"waiting for others instances before installing (if you want to skip waiting, use BrowserWorker.disableWaitingOtherInstances())"
 				);
 			}
@@ -698,10 +637,10 @@ class BrowserWorker {
 				} else if (BrowserWorker._currentRouteStrategyIs(CacheStrategy.CACHE_FIRST)) {
 					BrowserWorker._executeCacheFirstStrategy(event);
 				} else {
-					BrowserWorker._displayWarning(`unsupported strategy ${BrowserWorker._currentRoute.strategy}`);
+					Console.displayWarning(`unsupported strategy ${BrowserWorker._currentRoute.strategy}`);
 				}
 			} else {
-				BrowserWorker._displayInfo(
+				Console.displayInfo(
 					`resource ${event.request.url} do not match any strategy, leaving the browser to handle it`
 				);
 			}
@@ -717,7 +656,7 @@ class BrowserWorker {
 							.open(BrowserWorker._getCurrentRouteCacheName())
 							.then(cache => cache.put(event.request, response.clone()));
 
-						BrowserWorker._displayInfo(
+						Console.displayInfo(
 							`[NetworkFirst] fetched ${event.request.url} from the network (and put it in the cache)`
 						);
 
@@ -727,7 +666,7 @@ class BrowserWorker {
 					}
 				})
 				.catch(() => {
-					BrowserWorker._displayInfo(
+					Console.displayInfo(
 						`[NetworkFirst] fetched ${event.request.url} from the cache because it seems the network is down`
 					);
 
@@ -740,7 +679,7 @@ class BrowserWorker {
 		event.respondWith(
 			caches.match(event.request).then(function(response) {
 				if (response) {
-					BrowserWorker._displayInfo(`[CacheFirst] fetched ${event.request.url} from the cache`);
+					Console.displayInfo(`[CacheFirst] fetched ${event.request.url} from the cache`);
 
 					return response;
 				}
@@ -756,7 +695,7 @@ class BrowserWorker {
 						cache.put(event.request, responseToCache);
 					});
 
-					BrowserWorker._displayInfo(
+					Console.displayInfo(
 						`[CacheFirst] No cache found for ${
 							event.request.url
 						}, so the resource have been fetched from the network and stored in cache`

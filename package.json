@@ -55,6 +55,7 @@
 	"files": [
 		"lib/BrowserWorker.js",
 		"lib/CacheStrategy.js",
+		"lib/Console.js",
 		"lib/main.js",
 		"lib/Route.js"
 	],
