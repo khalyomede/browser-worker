@@ -10,6 +10,6 @@ module.exports = function(config) {
 		babel: {
 			optionsFile: ".babelrc"
 		},
-		mutate: ["lib/**/*.js"]
+		mutate: ["lib/**/*.js", "!lib/main.js"]
 	});
 };
