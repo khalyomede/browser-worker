@@ -67,6 +67,7 @@ class BrowserWorker {
 	 * @param {String} strategy The name of the strategy.
 	 * @return {BrowserWorker}
 	 * @throws {TypeError} If the strategy is not a string.
+	 * @throws {Error} If the strategy is empty.
 	 * @throws {Error} If the strategy is not supported.
 	 * @see CacheStrategy - The class that holds the available strategies.
 	 * @since 0.1.0
@@ -76,14 +77,17 @@ class BrowserWorker {
 	 * BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST);
 	 */
 	static setCacheStrategy(strategy) {
-		const typeOfStrategy = typeof strategy;
 		const supportedStrategies = CacheStrategy.getSupportedStrategies();
 
-		if (typeOfStrategy !== "string") {
-			throw new TypeError(`expected strategy to be a string (${typeOfStrategy} given)`);
+		if (!CacheStrategy.isValid(strategy)) {
+			throw new TypeError(`expected strategy to be a string (${typeof strategy} given)`);
 		}
 
-		if (!supportedStrategies.includes(strategy)) {
+		if (!CacheStrategy.isFilled(strategy)) {
+			throw new Error(`expected strategy not to be empty`);
+		}
+
+		if (!CacheStrategy.isSupported(strategy)) {
 			const strategies = supportedStrategies.join(", ");
 
 			throw new Error(`unsupported strategy ${strategy} (use one of the following: ${strategies})`);
@@ -115,7 +119,6 @@ class BrowserWorker {
 	 * @return {BrowserWorker}
 	 * @throws {TypeError} If the route is not a string or a regular expression.
 	 * @throws {Error} If the route is an empty string.
-	 * @throws {Error} If the cache strategy has not been set yet.
 	 * @since 0.1.0
 	 * @example
 	 * import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";
@@ -129,14 +132,6 @@ class BrowserWorker {
 
 		if (!Route.isFilled(route)) {
 			throw new Error("expected route string not to be empty");
-		}
-
-		if (!CacheStrategy.isValid(BrowserWorker._cacheStrategy)) {
-			const supportedCacheStrategies = CacheStrategy.getSupportedStrategies().join(", ");
-
-			throw new Error(
-				`the cache strategy is invalid (use BrowserWorker.setCacheStrategy() if you did not yet with one of the following value: ${supportedCacheStrategies})`
-			);
 		}
 
 		BrowserWorker._routes.push({

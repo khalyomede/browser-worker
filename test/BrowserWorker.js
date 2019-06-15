@@ -45,18 +45,6 @@ describe("BrowserWorker", () => {
 			expect(function() {
 				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoute("");
 			}).to.throw("expected route string not to be empty"));
-
-		it("should throw an Error if the cache strategy is invalid", () => {
-			BrowserWorker._cacheStrategy = "";
-
-			expect(() => BrowserWorker.addRoute("/")).to.throw(Error);
-
-			expect(() => BrowserWorker.addRoute("/")).to.throw(
-				`the cache strategy is invalid (use BrowserWorker.setCacheStrategy() if you did not yet with one of the following value: ${CacheStrategy.getSupportedStrategies().join(
-					", "
-				)})`
-			);
-		});
 	});
 
 	describe("addRoutes", () => {

@@ -43,11 +43,29 @@ class CacheStrategy {
 	}
 
 	/**
-	 * @param {String} cacheStrategy
+	 *
+	 * @param {String} strategy
 	 * @return {Boolean}
 	 */
-	static isValid(cacheStrategy) {
-		return cacheStrategy.trim().length > 0;
+	static isValid(strategy) {
+		return typeof strategy === "string";
+	}
+
+	/**
+	 * @param {String} strategy
+	 * @return {Boolean}
+	 */
+	static isFilled(strategy) {
+		return strategy.trim().length > 0;
+	}
+
+	/**
+	 *
+	 * @param {String} strategy
+	 * @return {Boolean}
+	 */
+	static isSupported(strategy) {
+		return CacheStrategy.getSupportedStrategies().includes(strategy);
 	}
 }
 
