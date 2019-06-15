@@ -247,6 +247,12 @@ describe("BrowserWorker", () => {
 			expect(() => BrowserWorker.setCacheStrategy("foo")).to.throw(
 				`unsupported strategy foo (use one of the following: ${CacheStrategy.getSupportedStrategies().join(", ")})`
 			));
+
+		it("should throw an Error if the cache strategy is empty", () =>
+			expect(() => BrowserWorker.setCacheStrategy("")).to.throw(Error));
+
+		it("should throw an Error if the cache strategy is empty", () =>
+			expect(() => BrowserWorker.setCacheStrategy("")).to.throw("expected strategy not to be empty"));
 	});
 
 	describe("setServiceWorkerPath", () => {
