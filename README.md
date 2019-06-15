@@ -12,6 +12,7 @@ Simplify scaffolding a service worker.
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Advices](#advices)
 - [API](api.md)
 - [Contributing](#contributing)
 
@@ -140,6 +141,138 @@ BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
 
 BrowserWorker.listenRequests();
 ```
+
+## Advices
+
+This are some tips I dare to give you because I went through issues and whished to knew how to prevent those before.
+
+1. Separate the code that registers you service worker from the rest of your app
+
+For example if your app folder looks like this:
+
+```bash
+myapp/
+  src/
+    js/
+      main.js
+    service-worker.js
+```
+
+Do not put your service worker registration step besides your app. So **the code below is not adviced**:
+
+```javascript
+import Vue from "vue";
+import { BrowserWorker } from "@khalyomede/browser-worker";
+
+BrowserWorker.setServiceWorkerPath("/service-worker.js").registerServiceWorker(); // not safe!
+
+new Vue({
+	el: "#app",
+	router: new VueRouter({
+		mode: "history",
+		routes: []
+	})
+});
+```
+
+It is not safe, because if you will use a _cache-first_ strategy on your route `/js/main.js`, and you would changed the path where the service worker is located for example, this file will never be fetched from the network again so your service worker will be stucked in your customer's browsers for a long time... Here is below **the adviced code**:
+
+```bash
+myapp/
+  src/
+    js/
+      main.js
+      on-load-register-service-worker.js
+    service-worker.js
+```
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<script type="text/javascript" src="/js/on-load-register-service-worker.js" async="true"></script>
+	</head>
+	<body>
+		<script type="text/javascript" src="/js/main.js"></script>
+	</body>
+</html>
+```
+
+This is better because now, having in mind to never catch this file in a route from your service worker, you will be able to reduce the risk this file gets stuck in the cache.
+
+```javascript
+// myapp/src/js/on-load-register-service-worker.js
+import { BrowserWorker } from "@khalyomede/browser-worker";
+
+BrowserWorker.setServiceWorkerPath("/service-worker.js").registerServiceWorker();
+```
+
+2. Ask your server to send information to prevent caching the service worker related files on your user's browser
+
+With this technic, you make sure, in addition to the advice below, your service worker files are not cached by the browser, thus preventing any issue when you want to edit your service worker.
+
+For example, with Apache, you can write this:
+
+```conf
+# myapp/dist/.htaccess
+
+# Prevents the browser from caching those files
+<Files "js/on-load-register-service-worker.js">
+  FileETag None
+  <ifModule mod_headers.c>
+     Header unset ETag
+     Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+     Header set Pragma "no-cache"
+     Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+  </ifModule>
+</Files>
+<Files "service-worker.js">
+  FileETag None
+  <ifModule mod_headers.c>
+     Header unset ETag
+     Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+     Header set Pragma "no-cache"
+     Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+  </ifModule>
+</Files>
+```
+
+3. Update the cache name of your strategy if you update it
+
+If you want to add, edit or remove a route, the best way to ensure the changes are applied as soon as possible it to update the cache name of your strategy. For example, let us say you are adding `/` using network first:
+
+```javascript
+// myapp/src/js/service-worker.js
+
+import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";
+
+BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+	.setCacheName("network-first-v1")
+	.addRoute("/");
+
+BrowserWorker.listenRequests();
+```
+
+And in one week, you finished your `/about` page and want to add it to the service worker under the same strategy:
+
+```javascript
+// myapp/src/js/service-worker.js
+
+import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";
+
+BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
+	.setCacheName("network-first-v2") // changed!
+	.addRoute("/")
+	.addRoute("/about");
+
+BrowserWorker.listenRequests();
+```
+
+By just changing the name of the cache name, you make sure your service worker invalidate the last version and install the new one as soon as possible. Browser Worker will clean the old cache so that there is no conflict.
 
 ## Contributing
 
