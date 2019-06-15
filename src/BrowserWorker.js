@@ -368,6 +368,7 @@ class BrowserWorker {
 	 *
 	 * @param {String} route
 	 * @return {Promise<Void>}
+	 * @todo export this to a dedicated class.
 	 */
 	static async addResourceToCache(route) {
 		if (!("caches" in window)) {
