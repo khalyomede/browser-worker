@@ -5,6 +5,40 @@
  */
 class Route {
 	/**
+	 *
+	 * @param {String|RegExp} route
+	 * @return {Route}
+	 * @todo Check if the route is valid.
+	 */
+	constructor(route) {
+		this.route = route;
+	}
+
+	/**
+	 * @param {String|RegExp} url
+	 * @return {Boolean}
+	 */
+	matches(url) {
+		return this.matchesByString(url) || this.matchesByRegExp(url);
+	}
+
+	/**
+	 *
+	 * @param {String|RegExp} url
+	 * @return {Boolean}
+	 */
+	matchesByString(url) {
+		return this.route.constructor === String && url.endsWith(this.route);
+	}
+
+	/**
+	 *
+	 */
+	matchesByRegExp(url) {
+		return this.route.constructor === RegExp && this.route.test(url);
+	}
+
+	/**
 	 * Captures images resources, including gif and webp.
 	 *
 	 * @type {RegExp}

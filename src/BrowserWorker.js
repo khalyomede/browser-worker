@@ -9,7 +9,7 @@ class BrowserWorker {
 	static _currentCacheName = "";
 	static _activeCachesName = [];
 	static _routes = [];
-	static _currentRoute = "";
+	static _currentRoute = {};
 	static _waitOtherInstances = true;
 	static _controlOverAllTabs = false;
 	static _serviceWorkerPath = "/service-worker.js";
@@ -508,10 +508,7 @@ class BrowserWorker {
 	 */
 	static _setCurrentRoute(url) {
 		for (const route of BrowserWorker._routes) {
-			if (
-				(route.route.constructor === String && url.endsWith(route.route)) ||
-				(route.route.constructor === RegExp && route.route.test(url))
-			) {
+			if (new Route(route.route).matches(url)) {
 				BrowserWorker._currentRoute = route;
 
 				break;
@@ -539,32 +536,13 @@ class BrowserWorker {
 	}
 
 	/**
-	 *
-	 * @param {Any} url
-	 * @return {Boolean}
-	 */
-	static _currentRouteMatchesByString(url) {
-		return BrowserWorker._currentRoute.route.constructor === String && url.endsWith(BrowserWorker._currentRoute.route);
-	}
-
-	/**
-	 *
-	 * @param {Any} url
-	 * @return {Boolean}
-	 */
-	static _currentRouteMatchesByRegExp(url) {
-		return BrowserWorker._currentRoute.route.constructor === RegExp && BrowserWorker._currentRoute.route.test(url);
-	}
-
-	/**
 	 * @param {String|RegExp} url
 	 * @return {Boolean}
 	 */
 	static _currentRouteMatches(url) {
-		return (
-			BrowserWorker._currentRouteValid() &&
-			(BrowserWorker._currentRouteMatchesByString(url) || BrowserWorker._currentRouteMatchesByRegExp(url))
-		);
+		const route = new Route(BrowserWorker._currentRoute.route);
+
+		return BrowserWorker._currentRouteValid() && (route.matchesByString(url) || route.matchesByRegExp(url));
 	}
 
 	/**
