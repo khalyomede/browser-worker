@@ -97,4 +97,25 @@ describe("Route", () => {
 			it(`should capture ${fontTest.name} with query strings`, () => expect(Route.FONTS.test(fontTest.url)).to.be.true);
 		}
 	});
+
+	describe("constructor", () => {
+		it("should properly save the route on the property", () => expect(new Route("/").route).to.be.equal("/"));
+
+		it("should properly save the regexp route on the property", () =>
+			expect(new Route(Route.ASSETS).route).to.be.equal(Route.ASSETS));
+	});
+
+	describe("matches", () => {
+		it("should return true if the url matches the route", () =>
+			expect(new Route("/").matches("http://localhost:3000/")).to.be.true);
+
+		it("should return false if the url does not match the route", () =>
+			expect(new Route("/").matches("http://localhost:3000/contact")).to.be.false);
+
+		it("should return true if the url matches the regexp route", () =>
+			expect(new Route(Route.ASSETS).matches("http://localhost:3000/js/main.min.js")).to.be.true);
+
+		it("should return false if the url does not match the regex route", () =>
+			expect(new Route(Route.ASSETS).matches("http://localhost:3000/font/Simple-Line-Icons.ttf")));
+	});
 });
