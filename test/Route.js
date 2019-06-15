@@ -141,5 +141,9 @@ describe("Route", () => {
 
 		it("should return false if the route is neither string nor regular expression", () =>
 			expect(Route.isValid(42)).to.be.false);
+
+		it("should return false if the route is null", () => expect(Route.isValid(null)).to.be.false);
+
+		it("should return false if the route is undefined", () => expect(Route.isValid(undefined)).to.be.false);
 	});
 });
