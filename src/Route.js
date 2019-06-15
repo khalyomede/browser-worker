@@ -113,7 +113,7 @@ class Route {
 	static isFilled(route) {
 		return (
 			(route.constructor === String && route.trim().length > 0) ||
-			(route.constructor === RegExp && route !== new RegExp())
+			(route.constructor === RegExp && route.toString() !== new RegExp().toString())
 		);
 	}
 }
