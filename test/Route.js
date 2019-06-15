@@ -129,5 +129,8 @@ describe("Route", () => {
 
 		it("should return true if the route is an empty regular expression", () =>
 			expect(Route.isFilled(new RegExp())).to.be.false);
+
+		it("should return false if the route is neither string nor regular expression", () =>
+			expect(Route.isFilled(42)).to.be.false);
 	});
 });
