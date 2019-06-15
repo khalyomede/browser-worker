@@ -459,7 +459,6 @@ class BrowserWorker {
 		BrowserWorker._activeCachesName = [];
 		BrowserWorker._routes = [];
 		BrowserWorker._currentRoute = "";
-		BrowserWorker._debug = false;
 		BrowserWorker._waitOtherInstances = true;
 		BrowserWorker._controlOverAllTabs = false;
 		BrowserWorker._serviceWorkerPath = "/service-worker.js";
