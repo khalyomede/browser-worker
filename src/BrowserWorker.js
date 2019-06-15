@@ -1,6 +1,7 @@
 import CacheStrategy from "./CacheStrategy";
 import Console from "./Console";
 import Response from "./Response";
+import Route from "./Route";
 
 class BrowserWorker {
 	static _cacheStrategy = "";
@@ -122,11 +123,11 @@ class BrowserWorker {
 	 * BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST).addRoute("/");
 	 */
 	static addRoute(route) {
-		if (!BrowserWorker._isRouteValid(route)) {
+		if (!Route.isValid(route)) {
 			throw new TypeError(`expected route to be either string or regexp (${typeof route} given)`);
 		}
 
-		if (route.constructor === String && route.toString().trim().length === 0) {
+		if (!Route.isFilled(route)) {
 			throw new Error("expected route string not to be empty");
 		}
 
@@ -228,11 +229,11 @@ class BrowserWorker {
 	 * BrowserWorker.deleteRoute("/");
 	 */
 	static deleteRoute(searchedRoute) {
-		if (!BrowserWorker._isRouteValid(searchedRoute)) {
+		if (!Route.isValid(searchedRoute)) {
 			throw new TypeError(`expected route to be either string or regexp (got: ${typeof searchedRoute})`);
 		}
 
-		if (searchedRoute.constructor === String && searchedRoute.trim().length === 0) {
+		if (!Route.isFilled(searchedRoute)) {
 			throw new Error("expected route not to be empty");
 		}
 

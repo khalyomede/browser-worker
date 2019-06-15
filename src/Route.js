@@ -63,6 +63,25 @@ class Route {
 	 * BrowserWorker.addRoute(Route.FONTS);
 	 */
 	static FONTS = /\.(woff|woff2|ttf|eot)(\?.*)*$/i;
+
+	/**
+	 * @param {String} route
+	 * @return {Boolean}
+	 */
+	static isValid(route) {
+		return route !== null && route !== undefined && (route.constructor === String || route.constructor === RegExp);
+	}
+
+	/**
+	 * @param {String} route
+	 * @return {Boolean}
+	 */
+	static isFilled(route) {
+		return (
+			(route.constructor === String && route.trim().length > 0) ||
+			(route.constructor === RegExp && route !== new RegExp())
+		);
+	}
 }
 
 export default Route;
