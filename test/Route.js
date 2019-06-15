@@ -133,4 +133,13 @@ describe("Route", () => {
 		it("should return false if the route is neither string nor regular expression", () =>
 			expect(Route.isFilled(42)).to.be.false);
 	});
+
+	describe("isValid", () => {
+		it("should return true if the route is a string", () => expect(Route.isValid("/")).to.be.true);
+
+		it("should return true if the route is a regular expression", () => expect(Route.isValid(Route.ASSETS)).to.be.true);
+
+		it("should return false if the route is neither string nor regular expression", () =>
+			expect(Route.isValid(42)).to.be.false);
+	});
 });
