@@ -205,7 +205,7 @@ import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";Brow
 
 Returns true if at least one route matches the route or the regexp, else returns false.
 
-**since**: v0.1.0
+**since**: v0.4.0
 
 **returns** Boolean
 
