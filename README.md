@@ -13,6 +13,7 @@ Simplify scaffolding a service worker.
 - [Installation](#installation)
 - [Usage](#usage)
 - [API](api.md)
+- [Contributing](#contributing)
 
 ## About
 
@@ -139,3 +140,58 @@ BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
 
 BrowserWorker.listenRequests();
 ```
+
+## Contributing
+
+If you want to add value to the library, here is the steps I advice you to follow to create a pull request in the bests conditions:
+
+1. Click on the fork button (it will create a clone of this repository, in your GitHub account)
+2. Clone your own version of this project in your computer
+
+```bash
+git clone https://github.com/you/browser-worker
+```
+
+3. Move into the directory, and "start" the project:
+
+```bash
+yarn install && yarn start
+```
+
+_(it uses yarn, which is easily downloadable: [Yarn installation page](https://yarnpkg.com/en/docs/install), but you can also use npm if you prefer)_
+
+4. Perform your changes/improvements
+5. Test that your changes are safe to push:
+
+```bash
+yarn test
+```
+
+6. Check if the documentation needs to change:
+
+```bash
+yarn documentation
+```
+
+7. If you added a new file in the `src` folder, do not forget to add it on the dedicated array in the `package.json`:
+
+```javascript
+// package.json
+
+...
+"files": [
+  "lib/BrowserWorker.js",
+  "lib/Cache.js",
+  "lib/CacheStrategy.js",
+  "lib/Console.js",
+  "lib/main.js",
+  "lib/Response.js",
+  "lib/Route.js",
+  "lib/YOUR_NEW_FILE_HERE.js"
+]
+```
+
+8. Push your changes to your project
+9. Make a Pull Request by choosing from your branch to the master branch of this library in the [Pull Request GitHub dedicated page](https://github.com/khalyomede/browser-worker/compare).
+
+Thank you a lot for your time!
