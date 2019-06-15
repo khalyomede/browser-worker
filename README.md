@@ -9,6 +9,7 @@ Simplify scaffolding a service worker.
 ## Summary
 
 - [About](#about)
+- [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
 - [API](api.md)
@@ -22,7 +23,15 @@ Services Workers is a mecanism between your client browser and your server, to h
 - ["Using Service Workers" by Mozilla Developper Network](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
 - ["Service Workers: an introduction" by Matt Gaunt from Google Developper](https://developers.google.com/web/fundamentals/primers/service-workers/)
 
-You can use it to register your service worker (on your regular web page), and to instruct your service worker your desired workflow (on the dedicated service worker file). Lean more by reading the [Usage](#usage) section.
+## Features
+
+Here is all you can do with this library:
+
+- Register a service worker
+- Configure your service worker to set up cache cache strategies (network-first, cache-first) for certain routes by matching using a string or a regular expression
+- Provide "read later offline" features to your user easily
+
+Lean more by reading the [Usage](#usage) section.
 
 ## Installation
 
