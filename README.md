@@ -55,6 +55,7 @@ In development.
 ## Usage
 
 - [Register your service worker](#register-your-service-worker)
+- [Skip waiting other service workers before installing the new one](#skip-waiting-other-service-workers-before-installing-the-new-one)
 - [Register a route and use a cache strategy](#register-a-route-and-use-a-cache-strategy)
 - [Add a resource to cache dynamically](#add-a-resource-to-cache-dynamically)
 - [Enable the debug mode to see what is happening from the console](#enable-the-debug-mode-to-see-what-is-happening-from-the-console)
@@ -77,6 +78,20 @@ By default, the service worker path is set to `/service-worker.js`, so you can o
 import { BrowserWorker } from "@khalyomede/browser-worker";
 
 BrowserWorker.registerServiceWorker();
+```
+
+### Skip waiting other service workers before installing the new one
+
+In this example, you will be able to tell your browser to instantly install your service worker when at page load. This is very useful if you want to make sure your service worker is always at the latest version possible. Without this, new service workers have to wait before installing, which could defer any changes you perform (I personnaly always use it).
+
+```javascript
+// myapp/service-worker.js
+import { BrowserWorker } from "@khalyomede/browser-worker";
+
+BrowserWorker.enableControlOverAllTabs(); // Every changes below will be applied to all active service workers in any others tabs.
+BrowserWorker.disableWaitingOtherInstances(); // Installs as soon as possible.
+
+// ...
 ```
 
 ### Register a route and use a cache strategy
