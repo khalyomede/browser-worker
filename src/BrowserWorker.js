@@ -436,6 +436,18 @@ class BrowserWorker {
 	}
 
 	/**
+	 * Adds multiple resources to the cache. Goes along very well with a Cache First strategy.
+	 *
+	 * @param {Array<String>} routes The routes urls to put in the cache.
+	 * @return {Promise<Void>}
+	 */
+	static async addResourcesToCache(routes) {
+		const additions = routes.map(route => BrowserWorker.addResourceToCache(route));
+
+		await Promise.all(additions);
+	}
+
+	/**
 	 * Listen to route requests and behaves according to your settings.
 	 *
 	 * @return {Void}
