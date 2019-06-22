@@ -117,6 +117,7 @@ Learn more about every possible cache strategies by reading the [API documentati
 In this example, we will simulate the "read later" button that you might see in some Progressive Web App to let you browse a content offline, by caching it ahead of time (without having the user to browser the resource first).
 
 ```javascript
+// myapp/js/main.js
 import { BrowserWorker } from "@khalyomede/browser-worker";
 
 document.addEventListener("DOMContentLoaded", () => {
