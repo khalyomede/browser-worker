@@ -4,7 +4,7 @@ import { CacheStrategy } from "../lib/main";
 describe("CacheStrategy", () => {
 	describe("getSupportedStrategies", () => {
 		it("should return an array of supported strategies as string", () =>
-			expect(CacheStrategy.getSupportedStrategies()).to.be.deep.equal(["network-first", "cache-first"]));
+			expect(CacheStrategy.getSupportedStrategies()).to.be.deep.equal(["network-first", "cache-first", "cache-only"]));
 	});
 
 	describe("constants", () => {
