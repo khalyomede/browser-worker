@@ -50,7 +50,43 @@ npm install --save-dev browser-worker
 
 ### Browser
 
-In development.
+Since the version `0.6.0`, you can include these files in your head tag to install your service worker:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<script
+			type="text/javascript"
+			src="https://unpkg.com/@khalyomede/browser-worker@0.*/dist/browser-worker.min.js"
+			defer="true"
+		></script>
+		<script type="text/javascript" src="/js/register-service-worker.js" defer="true"></script>
+	</head>
+	<body>
+		<!-- ... -->
+	</body>
+</html>
+```
+
+Once your page loads, the objects will be stored in the global `window` variable, and you will have access to those:
+
+```javascript
+// myapp/js/register-service-worker.js
+
+BrowserWorker.enableDebug();
+
+// ...
+```
+
+Here is a link to all the CDNs:
+
+- [BrowserWorker](https://unpkg.com/@khalyomede/browser-worker@0.*/dist/browser-worker.js)
+- [BrowserWorker (minified)](https://unpkg.com/@khalyomede/browser-worker@0.*/dist/browser-worker.min.js)
 
 ## Usage
 
