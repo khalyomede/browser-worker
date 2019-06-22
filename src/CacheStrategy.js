@@ -29,6 +29,18 @@ class CacheStrategy {
 	static CACHE_FIRST = "cache-first";
 
 	/**
+	 * Instruct the service worker to fetch the requests only from the cache. Suitable if you use BrowserWorker.addResourceToCache(), for resource to browse later for example.
+	 *
+	 * @type {String}
+	 * @since 0.7.0
+	 * @example
+	 * import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";
+	 *
+	 * BrowserWorker.setCacheStrategy(CacheStrategy.CACHE_ONLY);
+	 */
+	static CACHE_ONLY = "cache-only";
+
+	/**
 	 * Returns an array of string of the supported caches strategies by BrowserWorker.
 	 *
 	 * @return {Array<String>}
@@ -39,7 +51,7 @@ class CacheStrategy {
 	 * const supported = CacheStrategy.getSupportedStrategies();
 	 */
 	static getSupportedStrategies() {
-		return [CacheStrategy.NETWORK_FIRST, CacheStrategy.CACHE_FIRST];
+		return [CacheStrategy.NETWORK_FIRST, CacheStrategy.CACHE_FIRST, CacheStrategy.CACHE_ONLY];
 	}
 
 	/**
