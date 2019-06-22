@@ -1,6 +1,6 @@
 {
 	"name": "@khalyomede/browser-worker",
-	"version": "0.4.1",
+	"version": "0.5.0",
 	"description": "Simplify scaffolding a service worker.",
 	"main": "lib/main.js",
 	"repository": "https://github.com/khalyomede/browser-worker",
