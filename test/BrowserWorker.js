@@ -274,11 +274,15 @@ describe("BrowserWorker", () => {
 				BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
 					.setCacheName("network-first-v1")
 					.addRoute("/")._routes
-			).to.be.deep.equal([{ cacheName: "network-first-v1", route: "/", strategy: "network-first" }]));
+			).to.be.deep.equal([
+				{ cacheName: `network-first-v1${BrowserWorker._cacheSuffix}`, route: "/", strategy: "network-first" }
+			]));
 
 		it("should properly set the property value", () => {
-			const cacheName = "foo";
-			expect(BrowserWorker.setCacheName(cacheName)._currentCacheName).to.be.equal(cacheName);
+			const cacheName = `foo`;
+			expect(BrowserWorker.setCacheName(cacheName)._currentCacheName).to.be.equal(
+				cacheName + BrowserWorker._cacheSuffix
+			);
 		});
 
 		it("should throw a TypeError if the cache name is not a string", () =>
