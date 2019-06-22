@@ -1,3 +1,4 @@
+import Browser from "./Browser";
 import Cache from "./Cache";
 import CacheStrategy from "./CacheStrategy";
 import Console from "./Console";
@@ -115,7 +116,7 @@ class BrowserWorker {
 	}
 
 	/**
-	 * Register a route under the current strategy.
+	 * Register a route under the current strategy. If you add a route using the cache first strategy, it will also be appended to the cache (so you do not have to call BrowserWorker.addResourceToCache() manually).
 	 *
 	 * @param {String|RegExp} route The route or the regular expression representing the routes to catch.
 	 * @return {BrowserWorker}
@@ -141,6 +142,10 @@ class BrowserWorker {
 			route: route,
 			cacheName: BrowserWorker._currentCacheName
 		});
+
+		if (BrowserWorker._cacheStrategy === CacheStrategy.CACHE_ONLY && route.constructor === String) {
+			BrowserWorker.addResourceToCache(route);
+		}
 
 		return this;
 	}
@@ -349,7 +354,7 @@ class BrowserWorker {
 	 * BrowserWorker.setServiceWorkerPath("/service-worker.js").registerServiceWorker();
 	 */
 	static registerServiceWorker() {
-		if ("serviceWorker" in navigator) {
+		if (Browser.hasServiceWorkerApi()) {
 			navigator.serviceWorker
 				.register(BrowserWorker._serviceWorkerPath)
 				.then(registration => {
@@ -373,7 +378,7 @@ class BrowserWorker {
 	 * BrowserWorker.removeServiceWorker();
 	 */
 	static async removeServiceWorker() {
-		if ("serviceWorker" in navigator) {
+		if (Browser.hasServiceWorkerApi()) {
 			const registrations = await navigator.serviceWorker.getRegistrations();
 			const unregistrations = registrations.map(registration => registration.unregister());
 
@@ -400,7 +405,7 @@ class BrowserWorker {
 	 * BrowserWorker.removeCaches();
 	 */
 	static async removeCaches() {
-		if ("caches" in window) {
+		if (Browser.hasCacheApi()) {
 			const keys = await caches.keys();
 			const removals = keys.filter(key => key.endsWith(BrowserWorker._cacheSuffix)).map(key => caches.delete(key));
 
@@ -424,7 +429,7 @@ class BrowserWorker {
 	 * @todo export this to a dedicated class.
 	 */
 	static async addResourceToCache(route) {
-		if (!("caches" in window)) {
+		if (!Browser.hasCacheApi()) {
 			Console.displayWarning("the Cache API is not supported in your browser");
 
 			return;
@@ -669,6 +674,8 @@ class BrowserWorker {
 					Response.getFromNetworkFirst(event, BrowserWorker._getCurrentRouteCacheName());
 				} else if (BrowserWorker._currentRouteStrategyIs(CacheStrategy.CACHE_FIRST)) {
 					Response.getFromCacheFirst(event, BrowserWorker._getCurrentRouteCacheName());
+				} else if (BrowserWorker._currentRouteStrategyIs(CacheStrategy.CACHE_ONLY)) {
+					Response.getFromCacheOnly(event, Browser._getCurrentRouteCacheName);
 				} else {
 					Console.displayWarning(`unsupported strategy ${BrowserWorker._currentRoute.strategy}`);
 				}
