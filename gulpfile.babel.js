@@ -6,15 +6,21 @@ import ifEnv from "gulp-if-env";
 import rename from "gulp-rename";
 import sha from "gulp-sha";
 import babel from "gulp-babel";
+import kebabCase from "just-kebab-case";
 
 const lib = () =>
-	src("src/*.js")
+	src(["src/*.js", "!src/*.browser.js"])
 		.pipe(plumber())
 		.pipe(babel())
 		.pipe(dest("lib"));
 
 const cleanLib = () =>
 	src("lib", { allowEmpty: true })
+		.pipe(plumber())
+		.pipe(clean());
+
+const cleanDist = () =>
+	src("dist", { allowEmpty: true })
 		.pipe(plumber())
 		.pipe(clean());
 
@@ -63,12 +69,39 @@ const exampleServiceWorker = () =>
 		)
 		.pipe(dest("example"));
 
+const dist = () =>
+	src("src/*.browser.js")
+		.pipe(plumber())
+		.pipe(
+			browserify({
+				transform: ["babelify"]
+			})
+		)
+		.pipe(rename(path => (path.basename = kebabCase(path.basename.replace(".browser", "")))))
+		.pipe(dest("dist"));
+
+const distMin = () =>
+	src("src/*.browser.js")
+		.pipe(plumber())
+		.pipe(
+			browserify({
+				transform: ["babelify"],
+				plugin: ["tinyify"]
+			})
+		)
+		.pipe(
+			rename(path => {
+				path.basename = kebabCase(path.basename.replace(".browser", "")) + ".min";
+			})
+		)
+		.pipe(dest("dist"));
+
 const example = parallel(exampleMain, exampleServiceWorker);
 
 const start = () => {
-	watch("src/**/*.js", lib);
+	watch(["src/**/*.js", "!src/**/*.browser.js"], lib);
 };
 
 const build = parallel(series(cleanLib, lib));
 
-export { start, build, example };
+export { start, build, example, cleanDist, dist, distMin };

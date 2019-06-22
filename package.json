@@ -40,6 +40,7 @@
 		"gulp-sha": "0.*",
 		"gulp-typescript": "5.*",
 		"jsdoc-api": "5.*",
+		"just-kebab-case": "1.*",
 		"mocha": "6.*",
 		"np": "5.*",
 		"nyc": "14.*",
@@ -51,7 +52,7 @@
 	},
 	"scripts": {
 		"start": "gulp start",
-		"build": "gulp build",
+		"build": "gulp build && gulp cleanDist && gulp dist && gulp distMin",
 		"gulp": "gulp",
 		"documentation": "node script/documentation.js",
 		"test": "nyc --reporter=lcov mocha --require @babel/register test",
