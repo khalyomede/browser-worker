@@ -59,6 +59,7 @@ In development.
 - [Register a route and use a cache strategy](#register-a-route-and-use-a-cache-strategy)
 - [Add a resource to cache dynamically](#add-a-resource-to-cache-dynamically)
 - [Enable the debug mode to see what is happening from the console](#enable-the-debug-mode-to-see-what-is-happening-from-the-console)
+- [Emergency remove the service worker in case something went wrong](#emergency-remove-the-service-worker-in-case-something-went-wrong)
 
 ### Register your service worker
 
@@ -156,6 +157,23 @@ BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
 
 BrowserWorker.listenRequests();
 ```
+
+### Emergency remove the service worker in case something went wrong
+
+In this example, we will completly remove a service worker and all the generated caches. Use it if you think something went wrong or you want a new fresh start. Do not use it if you only want to update your service worker.
+
+```javascript
+// myapp/js/main.js
+import { BrowserWorker } from "@khalyomede/browser-worker";
+
+BrowserWorker.enableControlOverAllTabs(); // Use it to apply the changes for all the user's tabs.
+
+BrowserWorker.disableWaitingOtherInstances(); // Better use it anyway, to apply the changes as fast as possible.
+BrowserWorker.removeServiceWorker();
+BrowserWorker.removeCaches();
+```
+
+You do not have to necessary remove your file `/service-worker.js`, because it will not be called anymore.
 
 ## Advices
 
