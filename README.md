@@ -50,7 +50,7 @@ npm install --save-dev browser-worker
 
 ### Browser
 
-Since the version `0.6.0`, you can include these files in your head tag to install your service worker:
+Since the version `0.6.1`, you can include these files in your head tag to install your service worker:
 
 ```html
 <!DOCTYPE html>
