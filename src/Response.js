@@ -83,7 +83,7 @@ class Response {
 
 					return response;
 				} else {
-					Console.displayWarning(`[CacheOnly] No cache found for ${event.request.url} cannot return a response.`);
+					Console.displayWarning(`[CacheOnly] No cache found for ${event.request.url}, cannot return a response.`);
 				}
 			})
 		);
