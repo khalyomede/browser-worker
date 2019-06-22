@@ -425,9 +425,7 @@ class BrowserWorker {
 	 */
 	static async addResourceToCache(route) {
 		if (!("caches" in window)) {
-			/**
-			 * @todo log that caches api is not supported.
-			 */
+			Console.displayWarning("the Cache API is not supported in your browser");
 
 			return;
 		}
