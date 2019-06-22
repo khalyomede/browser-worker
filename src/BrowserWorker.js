@@ -426,7 +426,11 @@ class BrowserWorker {
 	 *
 	 * @param {String} route
 	 * @return {Promise<Void>}
-	 * @todo export this to a dedicated class.
+	 * @since 0.1.1
+	 * @example
+	 * import { BrowserWorker } from "@khalyomede/browser-worker";
+	 *
+	 * BrowserWorker.setCacheName("cache-only-v1").addResourceToCache("/about");
 	 */
 	static async addResourceToCache(route) {
 		if (!Browser.hasCacheApi()) {
@@ -445,6 +449,11 @@ class BrowserWorker {
 	 *
 	 * @param {Array<String>} routes The routes urls to put in the cache.
 	 * @return {Promise<Void>}
+	 * @since 0.7.0
+	 * @example
+	 * import { BrowserWorker } from "@khalyomede/browser-worker";
+	 *
+	 * BrowserWorker.setCacheName("cache-only-v1").addResourcesToCache(["/", "/contact", "/js/main.min.js"]);
 	 */
 	static async addResourcesToCache(routes) {
 		const additions = routes.map(route => BrowserWorker.addResourceToCache(route));

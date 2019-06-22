@@ -3,6 +3,8 @@
 ## Summary
 
 - Methods
+  - [BrowserWorker.addResourceToCache()](#browserworkeraddresourcetocache)
+  - [BrowserWorker.addResourcesToCache()](#browserworkeraddresourcestocache)
   - [BrowserWorker.addRoute()](#browserworkeraddroute)
   - [BrowserWorker.addRoutes()](#browserworkeraddroutes)
   - [BrowserWorker.debugEnabled()](#browserworkerdebugenabled)
@@ -27,6 +29,7 @@
   - [CacheStrategy.getSupportedStrategies()](#cachestrategygetsupportedstrategies)
 - Constants
   - [CacheStrategy.CACHE_FIRST](#cachestrategycache_first)
+  - [CacheStrategy.CACHE_ONLY](#cachestrategycache_only)
   - [CacheStrategy.NETWORK_FIRST](#cachestrategynetwork_first)
   - [Route.ASSETS](#routeassets)
   - [Route.AUDIOS](#routeaudios)
@@ -35,9 +38,37 @@
   - [Route.VIDEOS](#routevideos)
 
 
+### BrowserWorker.addResourceToCache()
+
+Adds the resource to the cache. The route still reacts to your strategies (if it matches).
+
+**since**: v0.1.1
+
+**returns** Promise.<Void>
+
+**examples**
+
+```javascript
+import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.setCacheName("cache-only-v1").addResourceToCache("/about");
+```
+
+### BrowserWorker.addResourcesToCache()
+
+Adds multiple resources to the cache. Goes along very well with a Cache First strategy.
+
+**since**: v0.7.0
+
+**returns** Promise.<Void>
+
+**examples**
+
+```javascript
+import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.setCacheName("cache-only-v1").addResourcesToCache(["/", "/contact", "/js/main.min.js"]);
+```
+
 ### BrowserWorker.addRoute()
 
-Register a route under the current strategy.
+Register a route under the current strategy. If you add a route using the cache first strategy, it will also be appended to the cache (so you do not have to call BrowserWorker.addResourceToCache() manually).
 
 **since**: v0.1.0
 
@@ -357,6 +388,20 @@ Instruct the service worker to fetch the requests from the cache in priority. If
 
 ```javascript
 import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST);
+```
+
+### CacheStrategy.CACHE_ONLY
+
+Instruct the service worker to fetch the requests only from the cache. Suitable if you use BrowserWorker.addResourceToCache(), for resource to browse later for example.
+
+**since**: v0.7.0
+
+**type** String
+
+**examples**
+
+```javascript
+import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";BrowserWorker.setCacheStrategy(CacheStrategy.CACHE_ONLY);
 ```
 
 ### CacheStrategy.NETWORK_FIRST
