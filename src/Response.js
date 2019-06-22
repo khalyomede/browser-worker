@@ -69,6 +69,25 @@ class Response {
 				})
 		);
 	}
+
+	/**
+	 * @param {Event} event
+	 * @param {String} cacheName
+	 * @return {Void}
+	 */
+	static getFromCacheOnly(event, cacheName) {
+		event.respondWith(
+			caches.match(event.request).then(function(response) {
+				if (response) {
+					Console.displayInfo(`[CacheOnly] fetched ${event.request.url} from the cache`);
+
+					return response;
+				} else {
+					Console.displayWarning(`[CacheOnly] No cache found for ${event.request.url} cannot return a response.`);
+				}
+			})
+		);
+	}
 }
 
 export default Response;
