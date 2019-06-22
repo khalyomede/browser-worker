@@ -67,7 +67,9 @@
 		"lib/Console.js",
 		"lib/main.js",
 		"lib/Response.js",
-		"lib/Route.js"
+		"lib/Route.js",
+		"dist/browser-worker.js",
+		"dist/browser-worker.min.js"
 	],
 	"dependencies": {
 		"@babel/core": "7.*",
