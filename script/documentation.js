@@ -56,9 +56,9 @@ for (const method of methods) {
 	const examples = method.examples.map(example => "```javascript\n" + example + "\n```").join("\n\n");
 	const parameters =
 		method.params.length > 0
-			? method.params.map(
-					parameter => `- ${parameter.name} {${parameter.type.names.join("|")}}: ${parameter.description}`
-			  )
+			? method.params
+					.map(parameter => `- ${parameter.name} {${parameter.type.names.join("|")}}: ${parameter.description}`)
+					.join("\n")
 			: "No parameters.";
 	const exceptions =
 		"exceptions" in method
