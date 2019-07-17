@@ -44,6 +44,10 @@ Adds the resource to the cache. The route still reacts to your strategies (if it
 
 **since**: v0.1.1
 
+**parameters**
+
+- route (String): undefined
+
 **returns** Promise.<Void>
 
 **examples**
@@ -57,6 +61,10 @@ import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.setCa
 Adds multiple resources to the cache. Goes along very well with a Cache First strategy.
 
 **since**: v0.7.0
+
+**parameters**
+
+- routes (Array.<String>): The routes urls to put in the cache.
 
 **returns** Promise.<Void>
 
@@ -72,6 +80,10 @@ Register a route under the current strategy. If you add a route using the cache 
 
 **since**: v0.1.0
 
+**parameters**
+
+- route (String|RegExp): The route or the regular expression representing the routes to catch.
+
 **returns** BrowserWorker
 
 **examples**
@@ -85,6 +97,10 @@ import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";Brow
 Add multiple routes under the current strategy.
 
 **since**: v0.1.0
+
+**parameters**
+
+No parameters.
 
 **returns** BrowserWorker
 
@@ -100,6 +116,10 @@ Returns true if the debug mode has been enabled, else returns false.
 
 **since**: v0.1.0
 
+**parameters**
+
+No parameters.
+
 **returns** Boolean
 
 **examples**
@@ -113,6 +133,10 @@ import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.debug
 Removes a route by its name or its regexp.
 
 **since**: v0.3.0
+
+**parameters**
+
+- route (String|RegExp): The route to remove.
 
 **returns** BrowserWorker
 
@@ -128,6 +152,10 @@ Delete all routes.
 
 **since**: v0.3.0
 
+**parameters**
+
+- searchedRoutes (Array.<(String|RegExp)>): The routes to remove.
+
 **returns** BrowserWorker
 
 **examples**
@@ -141,6 +169,10 @@ import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";Brow
 Prevent logging in console what BrowserWorker is doing.
 
 **since**: v0.3.0
+
+**parameters**
+
+No parameters.
 
 **returns** BrowserWorker
 
@@ -156,6 +188,10 @@ Disable the waiting step before actually applying your strategies.
 
 **since**: v0.1.0
 
+**parameters**
+
+No parameters.
+
 **returns** BrowserWorker
 
 **examples**
@@ -169,6 +205,10 @@ import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.disab
 Take control on all other active service worker for the next actions.
 
 **since**: v0.1.0
+
+**parameters**
+
+No parameters.
 
 **returns** BrowserWorker
 
@@ -184,6 +224,10 @@ Logs in console what is BrowserWorker doing.
 
 **since**: v0.1.0
 
+**parameters**
+
+No parameters.
+
 **returns** BrowserWorker
 
 **examples**
@@ -197,6 +241,10 @@ import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.enabl
 Enable waiting others previously installed service workers before installing the new one.
 
 **since**: v0.3.0
+
+**parameters**
+
+No parameters.
 
 **returns** BrowserWorker
 
@@ -212,6 +260,10 @@ Get the current cache strategy.
 
 **since**: v0.1.0
 
+**parameters**
+
+No parameters.
+
 **returns** String
 
 **examples**
@@ -225,6 +277,10 @@ import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";Brow
 Get the routes.
 
 **since**: v0.1.0
+
+**parameters**
+
+No parameters.
 
 **returns** Array.<Route>
 
@@ -240,6 +296,10 @@ Returns true if at least one route matches the route or the regexp, else returns
 
 **since**: v0.4.0
 
+**parameters**
+
+- searchedRoute (String|RegExp): The route to search for.
+
 **returns** Boolean
 
 **examples**
@@ -253,6 +313,10 @@ import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";Brow
 Registers the service worker. Should be used in your main javascript file (and not in the service worker file itself).
 
 **since**: v0.1.0
+
+**parameters**
+
+No parameters.
 
 **returns** Void
 
@@ -268,6 +332,10 @@ Removes all the caches generated from BrowserWorker. We know they have been gene
 
 **since**: v0.5.0
 
+**parameters**
+
+No parameters.
+
 **returns** Promise.<BrowserWorker>
 
 **examples**
@@ -281,6 +349,10 @@ import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.remov
 Unregisters the service workers. See BrowserWorker.removeCaches() if you also want to wipe out caches to fresh start again. If you need to just update the service worker, use BrowserWorker.setCacheName() and change it to make your service worker update itself the next time the user browse your web app.
 
 **since**: v0.5.0
+
+**parameters**
+
+No parameters.
 
 **returns** Promise.<BrowserWorker>
 
@@ -296,6 +368,10 @@ Reset the entire BrowserWorker state (e.g. setting its properties to their defau
 
 **since**: v0.3.0
 
+**parameters**
+
+No parameters.
+
 **returns** BrowserWorker
 
 **examples**
@@ -309,6 +385,10 @@ import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.reset
 Reset the cache strategy by setting its default value to empty.
 
 **since**: v0.2.0
+
+**parameters**
+
+No parameters.
 
 **returns** BrowserWorker
 
@@ -324,6 +404,10 @@ Reset the routes by settings the default value to an empty array.
 
 **since**: v0.2.0
 
+**parameters**
+
+No parameters.
+
 **returns** BrowserWorker
 
 **examples**
@@ -337,6 +421,10 @@ import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";Brow
 Sets the current cache strategy.
 
 **since**: v0.1.0
+
+**parameters**
+
+- strategy (String): The name of the strategy.
 
 **returns** BrowserWorker
 
@@ -352,6 +440,10 @@ Set the path to register the service worker. You should use it on the javascript
 
 **since**: v0.1.0
 
+**parameters**
+
+- path (String): The path where the service worker is located.
+
 **returns** BrowserWorker
 
 **examples**
@@ -365,6 +457,10 @@ import { BrowserWorker } from "@khalyomede/browser-worker";BrowserWorker.setSe
 Returns an array of string of the supported caches strategies by BrowserWorker.
 
 **since**: v0.1.0
+
+**parameters**
+
+No parameters.
 
 **returns** Array.<String>
 

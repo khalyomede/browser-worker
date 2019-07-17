@@ -54,8 +54,14 @@ for (const method of methods) {
 	const description = method.description;
 	const returns = method.returns.map(entry => entry.type.names.join(" | ")).join(" | ");
 	const examples = method.examples.map(example => "```javascript\n" + example + "\n```").join("\n\n");
+	const parameters =
+		method.params.length > 0
+			? method.params.map(
+					parameter => `- ${parameter.name} (${parameter.type.names.join("|")}): ${parameter.description}`
+			  )
+			: "No parameters.";
 
-	markdown += `### ${methodName}\n\n${description}\n\n**since**: v${since}\n\n**returns** ${returns}\n\n**examples**\n\n${examples}\n\n`;
+	markdown += `### ${methodName}\n\n${description}\n\n**since**: v${since}\n\n**parameters**\n\n${parameters}\n\n**returns** ${returns}\n\n**examples**\n\n${examples}\n\n`;
 }
 
 markdown += "\n\n";
