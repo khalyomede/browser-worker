@@ -57,11 +57,15 @@ for (const method of methods) {
 	const parameters =
 		method.params.length > 0
 			? method.params.map(
-					parameter => `- ${parameter.name} (${parameter.type.names.join("|")}): ${parameter.description}`
+					parameter => `- ${parameter.name} {${parameter.type.names.join("|")}}: ${parameter.description}`
 			  )
 			: "No parameters.";
+	const exceptions =
+		"exceptions" in method
+			? method.exceptions.map(exception => `- {${exception.type.names.join("|")}} ${exception.description}`).join("\n")
+			: "Nothing.";
 
-	markdown += `### ${methodName}\n\n${description}\n\n**since**: v${since}\n\n**parameters**\n\n${parameters}\n\n**returns** ${returns}\n\n**examples**\n\n${examples}\n\n`;
+	markdown += `### ${methodName}\n\n${description}\n\n**since**: v${since}\n\n**parameters**\n\n${parameters}\n\n**returns** ${returns}\n\n**throws**\n\n${exceptions}\n\n**examples**\n\n${examples}\n\n`;
 }
 
 markdown += "\n\n";

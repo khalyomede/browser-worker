@@ -46,9 +46,13 @@ Adds the resource to the cache. The route still reacts to your strategies (if it
 
 **parameters**
 
-- route (String): undefined
+- route {String}: undefined
 
 **returns** Promise.<Void>
+
+**throws**
+
+Nothing.
 
 **examples**
 
@@ -64,9 +68,13 @@ Adds multiple resources to the cache. Goes along very well with a Cache First st
 
 **parameters**
 
-- routes (Array.<String>): The routes urls to put in the cache.
+- routes {Array.<String>}: The routes urls to put in the cache.
 
 **returns** Promise.<Void>
+
+**throws**
+
+Nothing.
 
 **examples**
 
@@ -82,9 +90,14 @@ Register a route under the current strategy. If you add a route using the cache 
 
 **parameters**
 
-- route (String|RegExp): The route or the regular expression representing the routes to catch.
+- route {String|RegExp}: The route or the regular expression representing the routes to catch.
 
 **returns** BrowserWorker
+
+**throws**
+
+- {TypeError} If the route is not a string or a regular expression.
+- {Error} If the route is an empty string.
 
 **examples**
 
@@ -104,6 +117,12 @@ No parameters.
 
 **returns** BrowserWorker
 
+**throws**
+
+- {TypeError} If one of the route is neither a string nor a regular expression.
+- {Error} If one of the route is an empty string.
+- {Error} If the cache strategy has not been set.
+
 **examples**
 
 ```javascript
@@ -122,6 +141,10 @@ No parameters.
 
 **returns** Boolean
 
+**throws**
+
+Nothing.
+
 **examples**
 
 ```javascript
@@ -136,9 +159,14 @@ Removes a route by its name or its regexp.
 
 **parameters**
 
-- route (String|RegExp): The route to remove.
+- route {String|RegExp}: The route to remove.
 
 **returns** BrowserWorker
+
+**throws**
+
+- {TypError} If the route is not a String nor a RegExp.
+- {Error} If the route is an empty String.
 
 **examples**
 
@@ -154,9 +182,14 @@ Delete all routes.
 
 **parameters**
 
-- searchedRoutes (Array.<(String|RegExp)>): The routes to remove.
+- searchedRoutes {Array.<(String|RegExp)>}: The routes to remove.
 
 **returns** BrowserWorker
+
+**throws**
+
+- {TypeError} If one of the route is not a String nor a RegExp.
+- {Error} If one of the route is an empty string.
 
 **examples**
 
@@ -176,6 +209,10 @@ No parameters.
 
 **returns** BrowserWorker
 
+**throws**
+
+Nothing.
+
 **examples**
 
 ```javascript
@@ -193,6 +230,10 @@ Disable the waiting step before actually applying your strategies.
 No parameters.
 
 **returns** BrowserWorker
+
+**throws**
+
+Nothing.
 
 **examples**
 
@@ -212,6 +253,10 @@ No parameters.
 
 **returns** BrowserWorker
 
+**throws**
+
+Nothing.
+
 **examples**
 
 ```javascript
@@ -229,6 +274,10 @@ Logs in console what is BrowserWorker doing.
 No parameters.
 
 **returns** BrowserWorker
+
+**throws**
+
+Nothing.
 
 **examples**
 
@@ -248,6 +297,10 @@ No parameters.
 
 **returns** BrowserWorker
 
+**throws**
+
+Nothing.
+
 **examples**
 
 ```javascript
@@ -265,6 +318,10 @@ Get the current cache strategy.
 No parameters.
 
 **returns** String
+
+**throws**
+
+Nothing.
 
 **examples**
 
@@ -284,6 +341,10 @@ No parameters.
 
 **returns** Array.<Route>
 
+**throws**
+
+Nothing.
+
 **examples**
 
 ```javascript
@@ -298,9 +359,13 @@ Returns true if at least one route matches the route or the regexp, else returns
 
 **parameters**
 
-- searchedRoute (String|RegExp): The route to search for.
+- searchedRoute {String|RegExp}: The route to search for.
 
 **returns** Boolean
+
+**throws**
+
+Nothing.
 
 **examples**
 
@@ -320,6 +385,10 @@ No parameters.
 
 **returns** Void
 
+**throws**
+
+Nothing.
+
 **examples**
 
 ```javascript
@@ -337,6 +406,10 @@ Removes all the caches generated from BrowserWorker. We know they have been gene
 No parameters.
 
 **returns** Promise.<BrowserWorker>
+
+**throws**
+
+Nothing.
 
 **examples**
 
@@ -356,6 +429,10 @@ No parameters.
 
 **returns** Promise.<BrowserWorker>
 
+**throws**
+
+Nothing.
+
 **examples**
 
 ```javascript
@@ -373,6 +450,10 @@ Reset the entire BrowserWorker state (e.g. setting its properties to their defau
 No parameters.
 
 **returns** BrowserWorker
+
+**throws**
+
+Nothing.
 
 **examples**
 
@@ -392,6 +473,10 @@ No parameters.
 
 **returns** BrowserWorker
 
+**throws**
+
+Nothing.
+
 **examples**
 
 ```javascript
@@ -410,6 +495,10 @@ No parameters.
 
 **returns** BrowserWorker
 
+**throws**
+
+Nothing.
+
 **examples**
 
 ```javascript
@@ -424,9 +513,15 @@ Sets the current cache strategy.
 
 **parameters**
 
-- strategy (String): The name of the strategy.
+- strategy {String}: The name of the strategy.
 
 **returns** BrowserWorker
+
+**throws**
+
+- {TypeError} If the strategy is not a string.
+- {Error} If the strategy is empty.
+- {Error} If the strategy is not supported.
 
 **examples**
 
@@ -442,9 +537,13 @@ Set the path to register the service worker. You should use it on the javascript
 
 **parameters**
 
-- path (String): The path where the service worker is located.
+- path {String}: The path where the service worker is located.
 
 **returns** BrowserWorker
+
+**throws**
+
+Nothing.
 
 **examples**
 
@@ -463,6 +562,10 @@ Returns an array of string of the supported caches strategies by BrowserWorker.
 No parameters.
 
 **returns** Array.<String>
+
+**throws**
+
+Nothing.
 
 **examples**
 
