@@ -18,7 +18,7 @@ Simplify scaffolding a service worker.
 
 ## About
 
-BrowserWorker is a library that help you to build services workers without the hassle of taming the hardness of this technology. You only focus on how your service worker should behave against your requests, and let the library scaffold everything for you.
+BrowserWorker is a library that helps you to build services workers without the hassle of taming the hardness of this technology. You only focus on how your service worker should handle your requests, and let the library scaffold everything for you.
 
 Services Workers is a mecanism between your client browser and your server, to help you finely manage how requests should be fetch. It can help you set up offline modes, and is a criteria to pass [LightHouse](https://developers.google.com/web/tools/lighthouse/) tests for the [Progressive Web App](https://developers.google.com/web/progressive-web-apps/) section. Learn more on these articles:
 
@@ -30,7 +30,7 @@ Services Workers is a mecanism between your client browser and your server, to h
 Here is all you can do with this library:
 
 - Register a service worker
-- Configure your service worker to set up cache cache strategies (network-first, cache-first) for certain routes by matching using a string or a regular expression
+- Configure your service worker to manage request cache using network strategies (network-first, cache-first) for certain routes by matching using a string or a regular expression
 - Provide "read later offline" features to your user easily
 
 Lean more by reading the [Usage](#usage) section.
@@ -45,7 +45,7 @@ Lean more by reading the [Usage](#usage) section.
 On your project root folder, install the dependency:
 
 ```bash
-npm install --save-dev browser-worker
+npm install --save-dev @khalyomede/browser-worker
 ```
 
 ### Browser
@@ -99,7 +99,7 @@ Here is a link to all the CDNs:
 
 ### Register your service worker
 
-In this example, we will inform the browser that our service worker is ready to work, if the browser support this technology (this check is done for you, you do not need to check it).
+In this example, we will inform the browser that our service worker is ready to work, if the browser support this technology (this check is done for you).
 
 ```javascript
 // myapp/js/main.js
@@ -119,7 +119,9 @@ BrowserWorker.registerServiceWorker();
 
 ### Skip waiting other service workers before installing the new one
 
-In this example, you will be able to tell your browser to instantly install your service worker when at page load. This is very useful if you want to make sure your service worker is always at the latest version possible. Without this, new service workers have to wait before installing, which could defer any changes you perform (I personnaly always use it).
+In this example, you will be able to tell your browser to install your service worker when at page load as soon as possible.
+
+This is very useful if you want to make sure your service worker is always at the latest version. Without this, new service workers wouls have to wait before installing, which could defer any changes you perform (I personnaly always use it).
 
 ```javascript
 // myapp/service-worker.js
@@ -195,6 +197,15 @@ BrowserWorker.setCacheStrategy(CacheStrategy.NETWORK_FIRST)
 BrowserWorker.listenRequests();
 ```
 
+You should see something like this if you open the developer console:
+
+```
+[BrowserWorker][22:38:31.140] service worker registered (scope: http://localhost:3000/).
+[BrowserWorker][22:38:31.142] skipped waiting for other instances to finish.
+[BrowserWorker][22:38:31.144] controlling all tabs.
+[BrowserWorker][22:38:31.145] cleaned old caches.
+```
+
 ### Emergency remove the service worker in case something went wrong
 
 In this example, we will completly remove a service worker and all the generated caches. Use it if you think something went wrong or you want a new fresh start. Do not use it if you only want to update your service worker.
@@ -245,7 +256,7 @@ new Vue({
 });
 ```
 
-It is not safe, because if you will use a _cache-first_ strategy on your route `/js/main.js`, and you would changed the path where the service worker is located for example, this file will never be fetched from the network again so your service worker will be stucked in your customer's browsers for a long time... Here is below **the adviced code**:
+It is not safe, because if you will use a _cache-first_ strategy on your route `/js/main.js`, and you would changed the path where the service worker is located for example, this file will never be fetched from the network again so your service worker will be stucked in your customer's browsers for a long time (browsers implements an algorithm that will force a verification to see if your files changed [every 24 hours](https://stackoverflow.com/a/38854905/3753055))... Here is below **the adviced code**:
 
 ```bash
 myapp/
@@ -283,7 +294,7 @@ BrowserWorker.setServiceWorkerPath("/service-worker.js").registerServiceWorker()
 
 2. Ask your server to send information to prevent caching the service worker related files on your user's browser
 
-With this technic, you make sure, in addition to the advice below, your service worker files are not cached by the browser, thus preventing any issue when you want to edit your service worker.
+With this technique, you make sure, in addition to the advice below, your service worker files are not cached by the browser, thus preventing any issue when you want to edit your service worker.
 
 For example, with Apache, you can write this:
 
