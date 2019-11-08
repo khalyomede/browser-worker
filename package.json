@@ -35,6 +35,7 @@
 		"gulp-bro": "1.*",
 		"gulp-clean": "0.*",
 		"gulp-if-env": "0.*",
+		"gulp-npm-check": "1.*",
 		"gulp-plumber": "1.*",
 		"gulp-rename": "1.*",
 		"gulp-sha": "0.*",

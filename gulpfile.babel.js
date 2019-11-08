@@ -7,12 +7,17 @@ import rename from "gulp-rename";
 import sha from "gulp-sha";
 import babel from "gulp-babel";
 import kebabCase from "just-kebab-case";
+import npmCheck from "gulp-npm-check";
 
 const lib = () =>
 	src(["src/*.js", "!src/*.browser.js"])
 		.pipe(plumber())
 		.pipe(babel())
 		.pipe(dest("lib"));
+
+const check = done => {
+	npmCheck(done);
+};
 
 const cleanLib = () =>
 	src("lib", { allowEmpty: true })
@@ -102,6 +107,6 @@ const start = () => {
 	watch(["src/**/*.js", "!src/**/*.browser.js"], lib);
 };
 
-const build = parallel(series(cleanLib, lib));
+const build = parallel(check, series(cleanLib, lib));
 
 export { start, build, example, cleanDist, dist, distMin };
