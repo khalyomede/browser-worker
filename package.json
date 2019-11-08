@@ -32,7 +32,7 @@
 		"codecov": "3.*",
 		"gulp": "4.*",
 		"gulp-babel": "8.*",
-		"gulp-bro": "1.*",
+		"gulp-bro": "2.*",
 		"gulp-clean": "0.*",
 		"gulp-if-env": "0.*",
 		"gulp-npm-check": "1.*",
@@ -45,10 +45,11 @@
 		"mocha": "6.*",
 		"np": "5.*",
 		"nyc": "14.*",
+		"regenerator-runtime": "0.13.*",
 		"sort-by": "1.*",
 		"stryker-cli": "1.*",
 		"tinyify": "2.*",
-		"tsify": "3.*",
+		"tsify": "4.*",
 		"typescript": "3.*"
 	},
 	"scripts": {
@@ -59,7 +60,8 @@
 		"test": "nyc --reporter=lcov mocha --require @babel/register test",
 		"coverage": "codecov -t f8d82346-cd82-4982-905e-d957027807bd",
 		"release": "np",
-		"mutate": "stryker run"
+		"mutate": "stryker run",
+		"npm-check": "npm-check"
 	},
 	"files": [
 		"lib/BrowserWorker.js",
