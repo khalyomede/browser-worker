@@ -2,7 +2,7 @@
 
 Simplify scaffolding a service worker.
 
-![npm](https://img.shields.io/npm/v/@khalyomede/browser-worker.svg) ![https://bundlephobia.com/result?p=@khalyomede/browser-worker@0.6.1](https://badgen.net/bundlephobia/minzip/@khalyomede/browser-worker) ![NPM](https://img.shields.io/npm/l/@khalyomede/browser-worker.svg)
+![https://www.npmjs.com/package/@khalyomede/browser-worker](https://img.shields.io/npm/v/@khalyomede/browser-worker.svg) ![https://bundlephobia.com/result?p=@khalyomede/browser-worker@0.6.1](https://badgen.net/bundlephobia/minzip/@khalyomede/browser-worker) ![https://github.com/khalyomede/browser-worker/blob/master/LICENSE](https://img.shields.io/npm/l/@khalyomede/browser-worker.svg)
 
 [![Build Status](https://travis-ci.com/khalyomede/browser-worker.svg?branch=master)](https://travis-ci.com/khalyomede/browser-worker) [![codecov](https://codecov.io/gh/khalyomede/browser-worker/branch/master/graph/badge.svg)](https://codecov.io/gh/khalyomede/browser-worker) ![Stryker mutation score](https://badge.stryker-mutator.io/github.com/khalyomede/browser-worker/master) [![Maintainability](https://api.codeclimate.com/v1/badges/2f06a7bdd6a1e5d549fa/maintainability)](https://codeclimate.com/github/khalyomede/browser-worker/maintainability) ![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@khalyomede/browser-worker.svg) ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/@khalyomede/browser-worker)
 
