@@ -26,11 +26,40 @@ module.exports = _interopRequireDefault;
 },{}],3:[function(require,module,exports){
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+class Browser {
+  /**
+   * @return {Boolean}
+   */
+  static hasCacheApi() {
+    return typeof caches === "object" && caches.constructor === CacheStorage;
+  }
+  /**
+   * @return {Boolean}
+   */
+
+
+  static hasServiceWorkerApi() {
+    return "serviceWorker" in navigator;
+  }
+
+}
+
+var _default = Browser;
+exports.default = _default;
+
+},{}],4:[function(require,module,exports){
+"use strict";
+
 var _main = require("./main");
 
 window.BrowserWorker = _main.BrowserWorker;
 
-},{"./main":10}],4:[function(require,module,exports){
+},{"./main":11}],5:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -41,6 +70,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
+var _Browser = _interopRequireDefault(require("./Browser"));
 
 var _Cache = _interopRequireDefault(require("./Cache"));
 
@@ -151,7 +182,7 @@ class BrowserWorker {
     return BrowserWorker._cacheStrategy;
   }
   /**
-   * Register a route under the current strategy.
+   * Register a route under the current strategy. If you add a route using the cache first strategy, it will also be appended to the cache (so you do not have to call BrowserWorker.addResourceToCache() manually).
    *
    * @param {String|RegExp} route The route or the regular expression representing the routes to catch.
    * @return {BrowserWorker}
@@ -179,6 +210,10 @@ class BrowserWorker {
       route: route,
       cacheName: BrowserWorker._currentCacheName
     });
+
+    if (BrowserWorker._cacheStrategy === _CacheStrategy.default.CACHE_ONLY && route.constructor === String) {
+      BrowserWorker.addResourceToCache(route);
+    }
 
     return this;
   }
@@ -393,7 +428,7 @@ class BrowserWorker {
 
 
   static registerServiceWorker() {
-    if ("serviceWorker" in navigator) {
+    if (_Browser.default.hasServiceWorkerApi()) {
       navigator.serviceWorker.register(BrowserWorker._serviceWorkerPath).then(registration => {
         _Console.default.displayInfo(`service worker registered (scope: ${registration.scope}).`);
       }).catch(function (error) {
@@ -416,7 +451,7 @@ class BrowserWorker {
 
 
   static async removeServiceWorker() {
-    if ("serviceWorker" in navigator) {
+    if (_Browser.default.hasServiceWorkerApi()) {
       const registrations = await navigator.serviceWorker.getRegistrations();
       const unregistrations = registrations.map(registration => registration.unregister());
       const results = await Promise.all(unregistrations);
@@ -443,7 +478,7 @@ class BrowserWorker {
 
 
   static async removeCaches() {
-    if ("caches" in window) {
+    if (_Browser.default.hasCacheApi()) {
       const keys = await caches.keys();
       const removals = keys.filter(key => key.endsWith(BrowserWorker._cacheSuffix)).map(key => caches.delete(key));
       const results = await Promise.all(removals);
@@ -462,20 +497,40 @@ class BrowserWorker {
    *
    * @param {String} route
    * @return {Promise<Void>}
-   * @todo export this to a dedicated class.
+   * @since 0.1.1
+   * @example
+   * import { BrowserWorker } from "@khalyomede/browser-worker";
+   *
+   * BrowserWorker.setCacheName("cache-only-v1").addResourceToCache("/about");
    */
 
 
   static async addResourceToCache(route) {
-    if (!("caches" in window)) {
-      /**
-       * @todo log that caches api is not supported.
-       */
+    if (!_Browser.default.hasCacheApi()) {
+      _Console.default.displayWarning("the Cache API is not supported in your browser");
+
       return;
     }
 
     const cache = await caches.open(BrowserWorker._currentCacheName);
     cache.add(route);
+  }
+  /**
+   * Adds multiple resources to the cache. Goes along very well with a Cache First strategy.
+   *
+   * @param {Array<String>} routes The routes urls to put in the cache.
+   * @return {Promise<Void>}
+   * @since 0.7.0
+   * @example
+   * import { BrowserWorker } from "@khalyomede/browser-worker";
+   *
+   * BrowserWorker.setCacheName("cache-only-v1").addResourcesToCache(["/", "/contact", "/js/main.min.js"]);
+   */
+
+
+  static async addResourcesToCache(routes) {
+    const additions = routes.map(route => BrowserWorker.addResourceToCache(route));
+    await Promise.all(additions);
   }
   /**
    * Listen to route requests and behaves according to your settings.
@@ -694,6 +749,8 @@ class BrowserWorker {
           _Response.default.getFromNetworkFirst(event, BrowserWorker._getCurrentRouteCacheName());
         } else if (BrowserWorker._currentRouteStrategyIs(_CacheStrategy.default.CACHE_FIRST)) {
           _Response.default.getFromCacheFirst(event, BrowserWorker._getCurrentRouteCacheName());
+        } else if (BrowserWorker._currentRouteStrategyIs(_CacheStrategy.default.CACHE_ONLY)) {
+          _Response.default.getFromCacheOnly(event, _Browser.default._getCurrentRouteCacheName);
         } else {
           _Console.default.displayWarning(`unsupported strategy ${BrowserWorker._currentRoute.strategy}`);
         }
@@ -717,7 +774,7 @@ class BrowserWorker {
 var _default = BrowserWorker;
 exports.default = _default;
 
-},{"./Cache":5,"./CacheStrategy":6,"./Console":7,"./Response":8,"./Route":9,"@babel/runtime/helpers/defineProperty":1,"@babel/runtime/helpers/interopRequireDefault":2}],5:[function(require,module,exports){
+},{"./Browser":3,"./Cache":6,"./CacheStrategy":7,"./Console":8,"./Response":9,"./Route":10,"@babel/runtime/helpers/defineProperty":1,"@babel/runtime/helpers/interopRequireDefault":2}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -750,7 +807,7 @@ class Cache {
 var _default = Cache;
 exports.default = _default;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -791,6 +848,17 @@ class CacheStrategy {
    */
 
   /**
+   * Instruct the service worker to fetch the requests only from the cache. Suitable if you use BrowserWorker.addResourceToCache(), for resource to browse later for example.
+   *
+   * @type {String}
+   * @since 0.7.0
+   * @example
+   * import { BrowserWorker, CacheStrategy } from "@khalyomede/browser-worker";
+   *
+   * BrowserWorker.setCacheStrategy(CacheStrategy.CACHE_ONLY);
+   */
+
+  /**
    * Returns an array of string of the supported caches strategies by BrowserWorker.
    *
    * @return {Array<String>}
@@ -801,7 +869,7 @@ class CacheStrategy {
    * const supported = CacheStrategy.getSupportedStrategies();
    */
   static getSupportedStrategies() {
-    return [CacheStrategy.NETWORK_FIRST, CacheStrategy.CACHE_FIRST];
+    return [CacheStrategy.NETWORK_FIRST, CacheStrategy.CACHE_FIRST, CacheStrategy.CACHE_ONLY];
   }
   /**
    *
@@ -837,10 +905,11 @@ class CacheStrategy {
 
 (0, _defineProperty2.default)(CacheStrategy, "NETWORK_FIRST", "network-first");
 (0, _defineProperty2.default)(CacheStrategy, "CACHE_FIRST", "cache-first");
+(0, _defineProperty2.default)(CacheStrategy, "CACHE_ONLY", "cache-only");
 var _default = CacheStrategy;
 exports.default = _default;
 
-},{"@babel/runtime/helpers/defineProperty":1,"@babel/runtime/helpers/interopRequireDefault":2}],7:[function(require,module,exports){
+},{"@babel/runtime/helpers/defineProperty":1,"@babel/runtime/helpers/interopRequireDefault":2}],8:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -943,7 +1012,7 @@ class Console {
 var _default = Console;
 exports.default = _default;
 
-},{"@babel/runtime/helpers/defineProperty":1,"@babel/runtime/helpers/interopRequireDefault":2}],8:[function(require,module,exports){
+},{"@babel/runtime/helpers/defineProperty":1,"@babel/runtime/helpers/interopRequireDefault":2}],9:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1010,13 +1079,31 @@ class Response {
       return caches.match(event.request);
     }));
   }
+  /**
+   * @param {Event} event
+   * @param {String} cacheName
+   * @return {Void}
+   */
+
+
+  static getFromCacheOnly(event, cacheName) {
+    event.respondWith(caches.match(event.request).then(function (response) {
+      if (response) {
+        _Console.default.displayInfo(`[CacheOnly] fetched ${event.request.url} from the cache`);
+
+        return response;
+      } else {
+        _Console.default.displayWarning(`[CacheOnly] No cache found for ${event.request.url}, cannot return a response.`);
+      }
+    }));
+  }
 
 }
 
 var _default = Response;
 exports.default = _default;
 
-},{"./Console":7,"@babel/runtime/helpers/interopRequireDefault":2}],9:[function(require,module,exports){
+},{"./Console":8,"@babel/runtime/helpers/interopRequireDefault":2}],10:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1109,7 +1196,7 @@ class Route {
 var _default = Route;
 exports.default = _default;
 
-},{"@babel/runtime/helpers/defineProperty":1,"@babel/runtime/helpers/interopRequireDefault":2}],10:[function(require,module,exports){
+},{"@babel/runtime/helpers/defineProperty":1,"@babel/runtime/helpers/interopRequireDefault":2}],11:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -1142,4 +1229,4 @@ var _CacheStrategy = _interopRequireDefault(require("./CacheStrategy"));
 
 var _Route = _interopRequireDefault(require("./Route"));
 
-},{"./BrowserWorker":4,"./CacheStrategy":6,"./Route":9,"@babel/runtime/helpers/interopRequireDefault":2}]},{},[3]);
+},{"./BrowserWorker":5,"./CacheStrategy":7,"./Route":10,"@babel/runtime/helpers/interopRequireDefault":2}]},{},[4]);
