@@ -64,6 +64,7 @@
 		"npm-check": "npm-check"
 	},
 	"files": [
+		"lib/Browser.js",
 		"lib/BrowserWorker.js",
 		"lib/Cache.js",
 		"lib/CacheStrategy.js",
