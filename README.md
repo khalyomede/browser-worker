@@ -84,7 +84,7 @@ BrowserWorker.enableDebug();
 // ...
 ```
 
-Here is a link to all the CDNs:
+Here is a CDN link to the latest version of BrowserWorker:
 
 - [BrowserWorker](https://unpkg.com/@khalyomede/browser-worker@0.*/dist/browser-worker.js)
 - [BrowserWorker (minified)](https://unpkg.com/@khalyomede/browser-worker@0.*/dist/browser-worker.min.js)
