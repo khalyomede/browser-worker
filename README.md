@@ -29,9 +29,10 @@ Services Workers is a mecanism between your client browser and your server, to h
 
 Here is all you can do with this library:
 
-- Register a service worker
+- Register a service worker (both from your main file and your service worker, using a single API)
 - Configure your service worker to manage request cache using network strategies (see [all the strategies](api.md#cachestrategycache_first)) for certain routes by matching using a string or a regular expression
 - Provide "read later offline" features to your user easily
+- Emergency remove the service worker and the generated cache in case it is needed
 
 Lean more by reading the [Usage](#usage) section.
 
