@@ -36,7 +36,7 @@ class Browser {
    * @return {Boolean}
    */
   static hasCacheApi() {
-    return typeof caches === "object" && caches.constructor === CacheStorage;
+    return caches instanceof CacheStorage;
   }
   /**
    * @return {Boolean}
@@ -211,7 +211,7 @@ class BrowserWorker {
       cacheName: BrowserWorker._currentCacheName
     });
 
-    if (BrowserWorker._cacheStrategy === _CacheStrategy.default.CACHE_ONLY && route.constructor === String) {
+    if (BrowserWorker._cacheStrategy === _CacheStrategy.default.CACHE_ONLY && typeof route === "string") {
       BrowserWorker.addResourceToCache(route);
     }
 
@@ -690,7 +690,7 @@ class BrowserWorker {
 
 
   static _currentRouteValid() {
-    return BrowserWorker._currentRoute !== null && BrowserWorker._currentRoute !== undefined && BrowserWorker._currentRoute.constructor === Object;
+    return BrowserWorker._currentRoute !== null && BrowserWorker._currentRoute !== undefined && Array.isArray(BrowserWorker._currentRoute) === false && typeof BrowserWorker._currentRoute === "object";
   }
   /**
    * @param {String|RegExp} url
@@ -1147,7 +1147,7 @@ class Route {
 
 
   matchesByString(url) {
-    return this.route.constructor === String && url.endsWith(this.route);
+    return typeof this.route === "string" && url.endsWith(this.route);
   }
   /**
    *
@@ -1155,7 +1155,7 @@ class Route {
 
 
   matchesByRegExp(url) {
-    return this.route.constructor === RegExp && this.route.test(url);
+    return this.route instanceof RegExp && this.route.test(url);
   }
   /**
    * Captures images resources, including gif and webp.
@@ -1174,7 +1174,7 @@ class Route {
    * @return {Boolean}
    */
   static isValid(route) {
-    return route !== null && route !== undefined && (route.constructor === String || route.constructor === RegExp);
+    return route !== null && route !== undefined && (typeof route === "string" || route instanceof RegExp);
   }
   /**
    * @param {String} route
@@ -1183,7 +1183,7 @@ class Route {
 
 
   static isFilled(route) {
-    return route.constructor === String && route.trim().length > 0 || route.constructor === RegExp && route.toString() !== new RegExp().toString();
+    return typeof route === "string" && route.trim().length > 0 || route instanceof RegExp && route.toString() !== new RegExp().toString();
   }
 
 }
